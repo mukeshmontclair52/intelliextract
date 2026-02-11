@@ -5,19 +5,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Settings2, Cpu, Thermometer, FileText, Sparkles, Brain } from "lucide-react";
+import { Settings2, Cpu, Thermometer, FileText, Sparkles, Brain, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function ConfigSidebar({ config, onConfigChange }) {
+export default function ConfigSidebar({ config, onConfigChange, isCollapsed, onToggleCollapse }) {
   return (
-    <div className="w-80 flex-shrink-0 space-y-4">
+    <div className="relative flex-shrink-0">
+      <AnimatePresence mode="wait">
+        {!isCollapsed ? (
+          <motion.div
+            key="expanded"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 320, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-3 overflow-hidden"
+          >
       <Card className="bg-white shadow-sm border-slate-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <Settings2 className="w-4 h-4 text-indigo-500" />
+        <CardHeader className="py-2.5 px-3">
+          <CardTitle className="text-xs font-semibold text-slate-700 flex items-center gap-2">
+            <Settings2 className="w-3.5 h-3.5 text-indigo-500" />
             Extraction Engine
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 px-3 pb-3">
           <div className="space-y-2">
             <Label className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5" />
@@ -62,13 +74,13 @@ export default function ConfigSidebar({ config, onConfigChange }) {
       </Card>
 
       <Card className="bg-white shadow-sm border-slate-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <Brain className="w-4 h-4 text-indigo-500" />
+        <CardHeader className="py-2.5 px-3">
+          <CardTitle className="text-xs font-semibold text-slate-700 flex items-center gap-2">
+            <Brain className="w-3.5 h-3.5 text-indigo-500" />
             Model Settings
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 px-3 pb-3">
           <div className="space-y-2">
             <Label className="text-xs font-medium text-slate-500">GPT Model</Label>
             <Select 
@@ -146,13 +158,13 @@ export default function ConfigSidebar({ config, onConfigChange }) {
       </Card>
 
       <Card className="bg-white shadow-sm border-slate-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-indigo-500" />
+        <CardHeader className="py-2.5 px-3">
+          <CardTitle className="text-xs font-semibold text-slate-700 flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
             AI Evaluation
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 px-3 pb-3">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label className="text-xs font-medium text-slate-700">
@@ -190,6 +202,31 @@ export default function ConfigSidebar({ config, onConfigChange }) {
           )}
         </CardContent>
       </Card>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="collapsed"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 48, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="h-full"
+          />
+        )}
+      </AnimatePresence>
+      
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onToggleCollapse}
+        className="absolute top-2 -right-3 h-6 w-6 rounded-full bg-white border border-slate-200 shadow-sm hover:bg-slate-50 z-10"
+      >
+        {isCollapsed ? (
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+        ) : (
+          <ChevronLeft className="w-3.5 h-3.5 text-slate-600" />
+        )}
+      </Button>
     </div>
   );
 }

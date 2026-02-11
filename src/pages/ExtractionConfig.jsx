@@ -61,6 +61,7 @@ export default function ExtractionConfigPage() {
   const [description, setDescription] = useState(initialDescription);
   const [viewMode, setViewMode] = useState("fields");
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const totalFields = fields.reduce((acc, field) => {
     let count = 1;
@@ -122,7 +123,7 @@ export default function ExtractionConfigPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="px-6 py-4">
+        <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3 text-sm text-slate-500 mb-1">
@@ -151,19 +152,24 @@ export default function ExtractionConfigPage() {
       </header>
 
       {/* Main Content */}
-      <div className="flex p-6 gap-6">
-        <ConfigSidebar config={config} onConfigChange={setConfig} />
+      <div className="flex p-4 gap-4">
+        <ConfigSidebar 
+          config={config} 
+          onConfigChange={setConfig}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        />
 
         {/* Fields Configuration */}
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-3">
           <TaskDescription 
             description={description} 
             onDescriptionChange={setDescription} 
           />
 
           {/* Fields Header */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-            <div className="p-4 border-b border-slate-100">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
+            <div className="p-3 border-b border-slate-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <h2 className="text-sm font-semibold text-slate-700">
@@ -222,7 +228,7 @@ export default function ExtractionConfigPage() {
             </div>
 
             {/* Fields List */}
-            <div className="p-4">
+            <div className="p-3">
               <AnimatePresence mode="popLayout">
                 {viewMode === "fields" ? (
                   <motion.div
@@ -230,7 +236,7 @@ export default function ExtractionConfigPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="space-y-4"
+                    className="space-y-2.5"
                   >
                     {fields.map((field, index) => (
                       <FieldCard
@@ -269,7 +275,7 @@ export default function ExtractionConfigPage() {
       </div>
 
       {/* Footer Actions */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-200 px-6 py-4">
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 px-4 py-3">
         <div className="flex items-center justify-end gap-3">
           <Button variant="outline" className="text-slate-600">
             <X className="w-4 h-4 mr-2" />
