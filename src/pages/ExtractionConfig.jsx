@@ -10,7 +10,10 @@ import {
   Code2, 
   LayoutList,
   Save,
-  X
+  X,
+  Sparkles,
+  FileUp,
+  Play
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ConfigSidebar from "@/components/extraction/ConfigSidebar";
@@ -62,6 +65,8 @@ export default function ExtractionConfigPage() {
   const [viewMode, setViewMode] = useState("fields");
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isGeneratingSchema, setIsGeneratingSchema] = useState(false);
+  const [isTestingSchema, setIsTestingSchema] = useState(false);
 
   const totalFields = fields.reduce((acc, field) => {
     let count = 1;
@@ -117,6 +122,22 @@ export default function ExtractionConfigPage() {
 
   const deleteField = (index) => {
     setFields(fields.filter((_, i) => i !== index));
+  };
+
+  const handleGenerateSchema = async () => {
+    setIsGeneratingSchema(true);
+    // TODO: Call AI to generate schema based on description
+    setTimeout(() => {
+      setIsGeneratingSchema(false);
+    }, 2000);
+  };
+
+  const handleTestSchema = async () => {
+    setIsTestingSchema(true);
+    // TODO: Test schema with document
+    setTimeout(() => {
+      setIsTestingSchema(false);
+    }, 2000);
   };
 
   return (
@@ -196,32 +217,13 @@ export default function ExtractionConfigPage() {
                       {totalFields}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-1 border-l border-slate-200 pl-3">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-slate-400 hover:text-slate-600"
-                      onClick={() => setCurrentFieldIndex(Math.max(0, currentFieldIndex - 1))}
-                      disabled={currentFieldIndex === 0}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-slate-400 hover:text-slate-600"
-                      onClick={() => setCurrentFieldIndex(Math.min(fields.length - 1, currentFieldIndex + 1))}
-                      disabled={currentFieldIndex >= fields.length - 1}
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  </div>
                   <Button
-                    onClick={addField}
-                    className="bg-indigo-600 hover:bg-indigo-700 h-8 px-3 text-sm"
+                    onClick={handleGenerateSchema}
+                    disabled={isGeneratingSchema}
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 h-8 px-3 text-sm"
                   >
-                    <Plus className="w-4 h-4 mr-1.5" />
-                    Add Field
+                    <Sparkles className="w-4 h-4 mr-1.5" />
+                    {isGeneratingSchema ? "Generating..." : "Generate Schema by AI"}
                   </Button>
                 </div>
               </div>
@@ -255,15 +257,17 @@ export default function ExtractionConfigPage() {
                         <p className="text-xs mt-1">Click "Add Field" to get started</p>
                       </div>
                     )}
-                    {fields.length > 0 && (
-                      <div className="mt-4 pt-3 border-t border-slate-100">
-                        <button
-                          onClick={addField}
-                          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-indigo-600"
+                    {fields.length === 0 && (
+                      <div className="mt-4 flex justify-center">
+                        <Button
+                          onClick={handleGenerateSchema}
+                          disabled={isGeneratingSchema}
+                          variant="outline"
+                          className="border-dashed border-2"
                         >
-                          <Plus className="w-4 h-4" />
-                          Add New Field
-                        </button>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          {isGeneratingSchema ? "Generating Schema..." : "Generate Schema by AI"}
+                        </Button>
                       </div>
                     )}
                   </motion.div>
@@ -282,6 +286,35 @@ export default function ExtractionConfigPage() {
               </AnimatePresence>
             </div>
           </div>
+
+          {/* Test Schema Section */}
+          {fields.length > 0 && (
+            <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
+              <div className="p-3 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700">Test Extraction</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">Upload a document to test your schema configuration</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    className="h-8 px-3 text-sm"
+                  >
+                    <FileUp className="w-3.5 h-3.5 mr-1.5" />
+                    Upload Document
+                  </Button>
+                  <Button
+                    onClick={handleTestSchema}
+                    disabled={isTestingSchema}
+                    className="bg-green-600 hover:bg-green-700 h-8 px-3 text-sm"
+                  >
+                    <Play className="w-3.5 h-3.5 mr-1.5" />
+                    {isTestingSchema ? "Testing..." : "Test & View Result"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
