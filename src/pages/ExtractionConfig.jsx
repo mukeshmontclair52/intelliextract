@@ -17,7 +17,7 @@ import {
   FileText
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import ConfigSidebar from "@/components/extraction/ConfigSidebar";
+import ConfigBar from "@/components/extraction/ConfigBar";
 import TaskDescription from "@/components/extraction/TaskDescription";
 import FieldCard from "@/components/extraction/FieldCard";
 
@@ -176,15 +176,8 @@ export default function ExtractionConfigPage() {
 
       {/* Main Content */}
       <div className="p-4 space-y-3">
-        {/* Configuration Cards - Horizontal Layout */}
-        <div className="grid grid-cols-3 gap-3">
-          <ConfigSidebar 
-            config={config} 
-            onConfigChange={setConfig}
-            isCollapsed={false}
-            onToggleCollapse={() => {}}
-          />
-        </div>
+        {/* Configuration Bar */}
+        <ConfigBar config={config} onConfigChange={setConfig} />
 
         <TaskDescription 
           description={description} 
@@ -193,7 +186,7 @@ export default function ExtractionConfigPage() {
 
         <div className="flex gap-4">
           {/* Document Preview */}
-          <div className="w-[400px] flex-shrink-0">
+          <div className="w-[550px] flex-shrink-0">
             <div className="bg-white rounded-lg border border-slate-200 shadow-sm sticky top-20">
               <div className="p-3 border-b border-slate-100">
                 <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
