@@ -49,14 +49,20 @@
  */
 import ExtractionConfig from './pages/ExtractionConfig';
 import Onboarding from './pages/Onboarding';
+import Dashboard from './pages/Dashboard';
+import Transactions from './pages/Transactions';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "ExtractionConfig": ExtractionConfig,
     "Onboarding": Onboarding,
+    "Dashboard": Dashboard,
+    "Transactions": Transactions,
 }
 
 export const pagesConfig = {
     mainPage: "ExtractionConfig",
     Pages: PAGES,
+    Layout: __Layout,
 };
