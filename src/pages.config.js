@@ -52,6 +52,7 @@ import ExtractionConfig from './pages/ExtractionConfig';
 import Onboarding from './pages/Onboarding';
 import Transactions from './pages/Transactions';
 import DocumentConfig from './pages/DocumentConfig';
+import Playground from './pages/Playground';
 import __Layout from './Layout.jsx';
 
 
@@ -61,6 +62,7 @@ export const PAGES = {
     "Onboarding": Onboarding,
     "Transactions": Transactions,
     "DocumentConfig": DocumentConfig,
+    "Playground": Playground,
 }
 
 export const pagesConfig = {
