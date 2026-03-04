@@ -4,13 +4,13 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import StepProfile from "@/components/onboarding/StepProfile";
-import StepConfig from "@/components/onboarding/StepConfig";
+import StepUseCases from "@/components/onboarding/StepUseCases";
 import StepDocumentPrefs from "@/components/onboarding/StepDocumentPrefs";
 import StepReview from "@/components/onboarding/StepReview";
 
 const steps = [
   { id: 0, label: "Profile" },
-  { id: 1, label: "Engine Config" },
+  { id: 1, label: "Use Cases" },
   { id: 2, label: "Document Prefs" },
   { id: 3, label: "Review" },
 ];
@@ -18,21 +18,20 @@ const steps = [
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0);
   const [profile, setProfile] = useState({});
-  const [config, setConfig] = useState({ engine: "gen-ai", model: "gpt-4", temperature: 0, mode: "text", enableEvaluation: true });
+  const [useCasesData, setUseCasesData] = useState({ useCases: [] });
   const [docPrefs, setDocPrefs] = useState({ documentType: "alts-schedule", rawTextModel: "textract" });
 
   const goNext = () => setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
   const goPrev = () => setCurrentStep((s) => Math.max(s - 1, 0));
 
   const handleFinish = () => {
-    // TODO: Save onboarding data
     alert("Onboarding complete!");
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-2xl">
-        {/* Logo / Title */}
+        {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-slate-800">Welcome aboard</h1>
           <p className="text-slate-500 text-sm mt-1">Let's get you set up in just a few steps.</p>
@@ -74,7 +73,7 @@ export default function Onboarding() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
-          <div className="p-8">
+          <div className="p-8 max-h-[65vh] overflow-y-auto">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -84,28 +83,21 @@ export default function Onboarding() {
                 transition={{ duration: 0.2 }}
               >
                 {currentStep === 0 && <StepProfile data={profile} onChange={setProfile} />}
-                {currentStep === 1 && <StepConfig data={config} onChange={setConfig} />}
+                {currentStep === 1 && <StepUseCases data={useCasesData} onChange={setUseCasesData} />}
                 {currentStep === 2 && <StepDocumentPrefs data={docPrefs} onChange={setDocPrefs} />}
-                {currentStep === 3 && <StepReview profile={profile} config={config} docPrefs={docPrefs} />}
+                {currentStep === 3 && <StepReview profile={profile} useCasesData={useCasesData} docPrefs={docPrefs} />}
               </motion.div>
             </AnimatePresence>
           </div>
 
           {/* Footer */}
           <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-            <Button
-              variant="outline"
-              onClick={goPrev}
-              disabled={currentStep === 0}
-              className="text-slate-600"
-            >
+            <Button variant="outline" onClick={goPrev} disabled={currentStep === 0} className="text-slate-600">
               <ChevronLeft className="w-4 h-4 mr-1" />
               Back
             </Button>
 
-            <span className="text-xs text-slate-400">
-              Step {currentStep + 1} of {steps.length}
-            </span>
+            <span className="text-xs text-slate-400">Step {currentStep + 1} of {steps.length}</span>
 
             {currentStep < steps.length - 1 ? (
               <Button onClick={goNext} className="bg-indigo-600 hover:bg-indigo-700">
