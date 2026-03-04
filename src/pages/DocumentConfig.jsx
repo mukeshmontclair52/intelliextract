@@ -104,30 +104,144 @@ const CONFIG_TABS = [
   { key: "redaction", label: "Redaction", icon: EyeOff, color: "text-rose-600", bg: "bg-rose-50" },
 ];
 
+const initialFields = [
+  {
+    id: "1", name: "Funds", description: "Funds", type: "tabular",
+    children: [
+      { id: "1-1", name: "Fund Name", description: "Extract Name of the fund", type: "text", children: [] },
+      { id: "1-2", name: "Quarter of the Fund", description: "Enter the quarter in which the fund activity occurred.", type: "text", children: [] },
+    ],
+  },
+];
+
+const initialConfig = {
+  engine: "gen-ai", documentType: "alts-schedule", model: "gpt-4",
+  temperature: 0, mode: "text", rawTextModel: "textract", enableEvaluation: true, evaluationModel: "default",
+};
+
+const initialDescription = `You are an expert in extracting data from the "Schedule of Investments" section in quarterly reports. Your task is to parse the provided document and extract the complete Alts Performance report strictly following the JSON schema.`;
+
 function ExtractionDetail({ config }) {
+  const [fields, setFields] = useState(initialFields);
+  const [extractConfig, setExtractConfig] = useState(initialConfig);
+  const [description, setDescription] = useState(initialDescription);
+  const [viewMode, setViewMode] = useState("fields");
+  const [testDocument, setTestDocument] = useState(null);
+  const [isGeneratingSchema, setIsGeneratingSchema] = useState(false);
+  const [isTestingSchema, setIsTestingSchema] = useState(false);
+
   if (!config.enabled) return <DisabledState label="Extraction" />;
+
+  const totalFields = fields.reduce((acc, f) => acc + 1 + (f.children?.length || 0), 0);
+
+  const addField = () => setFields([...fields, { id: Date.now().toString(), name: "", description: "", type: "text", children: [] }]);
+
+  const addChildToField = (parentId) => {
+    const addChild = (list) => list.map((f) => {
+      if (f.id === parentId) return { ...f, children: [...(f.children || []), { id: `${parentId}-${Date.now()}`, name: "", description: "", type: "text", children: [] }] };
+      if (f.children) return { ...f, children: addChild(f.children) };
+      return f;
+    });
+    setFields(addChild(fields));
+  };
+
+  const updateField = (index, updated) => { const n = [...fields]; n[index] = updated; setFields(n); };
+  const deleteField = (index) => setFields(fields.filter((_, i) => i !== index));
+
+  const handleGenerateSchema = () => { setIsGeneratingSchema(true); setTimeout(() => setIsGeneratingSchema(false), 2000); };
+  const handleTestSchema = () => { setIsTestingSchema(true); setTimeout(() => setIsTestingSchema(false), 2000); };
+
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        {[
-          { label: "Engine", value: config.engine },
-          { label: "Model", value: config.model },
-          { label: "Mode", value: config.mode },
-          { label: "Temperature", value: config.temperature },
-        ].map(({ label, value }) => (
-          <div key={label} className="bg-slate-50 rounded-lg p-3">
-            <p className="text-xs text-slate-400 mb-0.5">{label}</p>
-            <p className="text-sm font-semibold text-slate-700">{value}</p>
+    <div className="space-y-3">
+      <ConfigBar config={extractConfig} onConfigChange={setExtractConfig} />
+      <TaskDescription description={description} onDescriptionChange={setDescription} />
+
+      <div className="flex gap-4">
+        {/* Document Preview */}
+        <div className="w-[400px] flex-shrink-0">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-sm sticky top-20">
+            <div className="p-3 border-b border-slate-100">
+              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-indigo-500" />Document Preview
+              </h3>
+            </div>
+            <div className="p-3">
+              {testDocument ? (
+                <div className="aspect-[8.5/11] bg-slate-100 rounded border border-slate-200" />
+              ) : (
+                <div className="aspect-[8.5/11] bg-slate-50 rounded border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400">
+                  <FileUp className="w-8 h-8 mb-2 opacity-50" />
+                  <p className="text-sm">No document uploaded</p>
+                  <Button variant="outline" size="sm" className="mt-3" onClick={() => document.getElementById("doc-upload").click()}>
+                    <FileUp className="w-3.5 h-3.5 mr-1.5" />Upload Document
+                  </Button>
+                  <input id="doc-upload" type="file" className="hidden" accept=".pdf,.png,.jpg,.jpeg" onChange={(e) => e.target.files?.[0] && setTestDocument(e.target.files[0])} />
+                </div>
+              )}
+            </div>
           </div>
-        ))}
-      </div>
-      <div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Extraction Fields ({config.fields.length})</p>
-        <div className="flex flex-wrap gap-2">
-          {config.fields.map((f) => (
-            <span key={f} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-100 px-2.5 py-1 rounded-full font-medium">{f}</span>
-          ))}
         </div>
+
+        {/* Fields */}
+        <div className="flex-1 space-y-3">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
+            <div className="p-3 border-b border-slate-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-sm font-semibold text-slate-700">Fields Configuration</h2>
+                  <Tabs value={viewMode} onValueChange={setViewMode}>
+                    <TabsList className="bg-slate-100 h-8">
+                      <TabsTrigger value="fields" className="text-xs h-6 px-3"><LayoutList className="w-3.5 h-3.5 mr-1.5" />Extraction Fields</TabsTrigger>
+                      <TabsTrigger value="json" className="text-xs h-6 px-3"><Code2 className="w-3.5 h-3.5 mr-1.5" />JSON View</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="bg-indigo-50 text-indigo-600 font-semibold">{totalFields}</Badge>
+                  <Button onClick={addField} variant="outline" className="h-8 px-3 text-sm"><Plus className="w-4 h-4 mr-1.5" />Add Field</Button>
+                  <Button onClick={handleGenerateSchema} disabled={isGeneratingSchema} className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 h-8 px-3 text-sm">
+                    <Sparkles className="w-4 h-4 mr-1.5" />{isGeneratingSchema ? "Generating..." : "Generate Schema by AI"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className="p-3">
+              <AnimatePresence mode="popLayout">
+                {viewMode === "fields" ? (
+                  <motion.div key="fields" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2.5">
+                    {fields.map((field, index) => (
+                      <FieldCard key={field.id} field={field} onUpdate={(u) => updateField(index, u)} onDelete={() => deleteField(index)} onAddChild={addChildToField} index={index} />
+                    ))}
+                    {fields.length === 0 && <div className="text-center py-12 text-slate-400 text-sm">No fields yet. Click "Add Field" to get started.</div>}
+                  </motion.div>
+                ) : (
+                  <motion.div key="json" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <pre className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-auto text-sm font-mono max-h-[400px]">{JSON.stringify(fields, null, 2)}</pre>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {fields.length > 0 && (
+            <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
+              <div className="p-3 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700">Test Extraction</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">Test your schema with the uploaded document</p>
+                </div>
+                <Button onClick={handleTestSchema} disabled={isTestingSchema || !testDocument} className="bg-green-600 hover:bg-green-700 h-8 px-3 text-sm">
+                  <Play className="w-3.5 h-3.5 mr-1.5" />{isTestingSchema ? "Testing..." : "Test & View Result"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3 pt-2">
+        <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
+        <Button className="bg-indigo-600 hover:bg-indigo-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
       </div>
     </div>
   );
