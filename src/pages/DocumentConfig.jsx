@@ -175,8 +175,8 @@ function ExtractionDetail({ config }) {
     <div className="space-y-3">
       <ConfigBar config={extractConfig} onConfigChange={setExtractConfig} />
       <TaskDescription description={description} onDescriptionChange={setDescription} />
-      <div className="flex gap-4">
-        <div className="w-[400px] flex-shrink-0">
+      <div className="flex gap-4 w-full">
+        <div className="w-[320px] flex-shrink-0">
           <div className="bg-white rounded-lg border border-slate-200 shadow-sm sticky top-20">
             <div className="p-3 border-b border-slate-100">
               <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
