@@ -11,6 +11,7 @@ const navItems = [
   { label: "Extraction Config", page: "ExtractionConfig", icon: FileSearch },
   { label: "Playground", page: "Playground", icon: FlaskConical },
   { label: "Onboarding", page: "Onboarding", icon: UserPlus },
+  { label: "Support", page: "Support", icon: LifeBuoy },
 ];
 
 export default function Layout({ children, currentPageName }) {
