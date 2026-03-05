@@ -227,11 +227,11 @@ function ExtractionDetail({ config }) {
               </div>
             </div>
           )}
-      </div>
-      <div className="flex justify-end gap-3 pt-2">
-        <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
-        <Button className="bg-indigo-600 hover:bg-indigo-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
-      </div>
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+          <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
+          <Button className="bg-indigo-600 hover:bg-indigo-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
+          </div>
     </div>
   );
 }
