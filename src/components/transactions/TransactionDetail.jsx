@@ -5,8 +5,11 @@ import { cn } from "@/lib/utils";
 import {
   ArrowLeft, Download, RotateCcw, ThumbsDown, AlertTriangle,
   CheckCircle2, Clock, XCircle, RefreshCw, FileText, UserCheck,
-  Zap, Scissors, Scan, ChevronRight, Check, X, Edit2, Save
+  Zap, Scissors, Scan, ChevronRight, Check, X, Edit2, Save, ChevronDown
 } from "lucide-react";
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
