@@ -70,7 +70,6 @@ const CAPABILITIES = [
 
 const STEPS = [
   { id: "identity", label: "Document Identity" },
-  { id: "ingestion", label: "Ingestion Source" },
   { id: "capabilities", label: "Capabilities" },
   { id: "review", label: "Review" },
 ];
