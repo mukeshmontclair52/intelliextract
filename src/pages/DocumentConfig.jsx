@@ -426,6 +426,7 @@ export default function DocumentConfig() {
 
       <div className="space-y-3 max-w-4xl">
         {filtered.map((doc) => {
+
           const activeConfigs = CONFIG_TABS.filter((t) => doc.configs[t.key]?.enabled);
           return (
             <div key={doc.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between gap-4">
