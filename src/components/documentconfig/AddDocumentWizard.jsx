@@ -270,18 +270,14 @@ export default function AddDocumentWizard({ onCancel, onSave }) {
     const enabledKeys = Object.keys(data.capabilities).filter((k) => data.capabilities[k]);
     const configs = {};
     ["extraction", "parse", "split", "redaction"].forEach((key) => {
-      configs[key] = enabledKeys.includes(key)
-        ? { enabled: true, ...(data.capConfigs[key] || {}) }
-        : { enabled: false };
+      configs[key] = { enabled: enabledKeys.includes(key) };
     });
     onSave({
       id: Date.now(),
       name: data.name,
       fileName: `${data.name.replace(/\s+/g, "_")}.pdf`,
-      type: data.type,
-      typeLabel: data.typeLabel,
-      ingestion: data.ingestion,
       configs,
+      preProcessing: data.preProcessing,
     });
   };
 
