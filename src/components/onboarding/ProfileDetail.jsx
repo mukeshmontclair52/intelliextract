@@ -147,6 +147,17 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
               <Check className="w-3.5 h-3.5" />Saved
             </span>
           )}
+          {!editing && (
+            <Button
+              size="sm"
+              variant={isActive ? "outline" : "ghost"}
+              onClick={() => setIsActive(!isActive)}
+              className={`h-8 text-xs ${isActive ? "text-slate-600" : "text-rose-600"}`}
+            >
+              <Power className="w-3.5 h-3.5 mr-1" />
+              {isActive ? "Deactivate" : "Activate"}
+            </Button>
+          )}
           {editing ? (
             <>
               <Button size="sm" variant="outline" onClick={handleCancel} className="h-8 text-xs">Cancel</Button>
