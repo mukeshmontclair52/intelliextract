@@ -120,8 +120,6 @@ export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0);
   const [profile, setProfile] = useState({});
   const [docConfigData, setDocConfigData] = useState({ selectedDocConfigs: [] });
-  const [docPrefs, setDocPrefs] = useState({ documentType: "alts-schedule", rawTextModel: "textract" });
-
   const goNext = () => setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
   const goPrev = () => setCurrentStep((s) => Math.max(s - 1, 0));
 
