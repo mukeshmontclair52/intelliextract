@@ -169,6 +169,39 @@ function StepCapabilities({ capabilities, onSelect }) {
   );
 }
 
+// ── Step 2b: Pre-Processing ───────────────────────────────────────────────────
+function StepPreProcessing({ settings, onChange }) {
+  const options = [
+    { key: "autoOrientation", label: "Auto Orientation Detection & Correction", desc: "Automatically detect and correct document orientation." },
+    { key: "dpiCorrection", label: "DPI Quality Correction", desc: "Enhance low-resolution scans to improve processing accuracy." },
+    { key: "rotationCorrection", label: "Rotation Correction", desc: "Detect and fix rotated pages before processing." },
+  ];
+
+  return (
+    <div className="space-y-3 max-w-2xl">
+      <p className="text-sm text-slate-500">Configure pre-processing steps applied to documents before extraction.</p>
+      {options.map(({ key, label, desc }) => (
+        <div
+          key={key}
+          onClick={() => onChange({ ...settings, [key]: !settings[key] })}
+          className={cn(
+            "rounded-xl border-2 p-4 flex items-start justify-between gap-4 cursor-pointer transition-all",
+            settings[key] ? "border-indigo-200 bg-indigo-50" : "border-slate-200 bg-white hover:border-slate-300"
+          )}
+        >
+          <div>
+            <p className={cn("font-semibold text-sm", settings[key] ? "text-slate-800" : "text-slate-600")}>{label}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+          </div>
+          <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5", settings[key] ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
+            {settings[key] && <Check className="w-3 h-3 text-white" />}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── Step 3: Review ────────────────────────────────────────────────────────────
 function StepReview({ data }) {
   const enabledCaps = CAPABILITIES.filter((c) => data.capabilities[c.key]);
