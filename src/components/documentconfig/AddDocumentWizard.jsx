@@ -367,7 +367,7 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
           </Button>
         ) : (
           <Button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">
-            <Check className="w-4 h-4 mr-2" />Save Document Config
+            <Check className="w-4 h-4 mr-2" />{isEditing ? "Save Changes" : "Save Document Config"}
           </Button>
         )}
       </div>
