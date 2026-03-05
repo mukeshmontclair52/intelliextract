@@ -38,7 +38,7 @@ const MOCK_PROFILES = [
   },
 ];
 
-function ProfileList({ profiles, onAdd, onDelete }) {
+function ProfileList({ profiles, onAdd, onDelete, onSelect }) {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
