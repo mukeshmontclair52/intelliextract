@@ -92,55 +92,7 @@ function StepIdentity({ data, onChange }) {
   );
 }
 
-// ── Step 2: Ingestion ─────────────────────────────────────────────────────────
-function StepIngestion({ data, onChange }) {
-  return (
-    <div className="space-y-6 max-w-2xl">
-      <p className="text-sm text-slate-500">How will documents of this type arrive in the system?</p>
-      <div className="grid grid-cols-2 gap-3">
-        {INGESTION_METHODS.map((m) => {
-          const Icon = m.icon;
-          return (
-            <button
-              key={m.value}
-              onClick={() => onChange({ ingestion: m.value })}
-              className={cn(
-                "text-left p-4 rounded-lg border-2 transition-all flex gap-3 items-start",
-                data.ingestion === m.value
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-slate-200 bg-white hover:border-slate-300"
-              )}
-            >
-              <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5",
-                data.ingestion === m.value ? "bg-indigo-100" : "bg-slate-100")}>
-                <Icon className={cn("w-4 h-4", data.ingestion === m.value ? "text-indigo-600" : "text-slate-500")} />
-              </div>
-              <div>
-                <p className={cn("text-sm font-semibold", data.ingestion === m.value ? "text-indigo-700" : "text-slate-700")}>{m.label}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{m.desc}</p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-      {data.ingestion === "email" && (
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">Sender Email Filter <span className="text-slate-400 font-normal">(optional)</span></label>
-          <Input placeholder="e.g. reports@blackstone.com" value={data.emailFilter || ""} onChange={(e) => onChange({ emailFilter: e.target.value })} className="max-w-md" />
-          <p className="text-xs text-slate-400 mt-1">Only ingest emails from this sender.</p>
-        </div>
-      )}
-      {data.ingestion === "s3" && (
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">S3 Bucket Path</label>
-          <Input placeholder="s3://my-bucket/reports/" value={data.s3Path || ""} onChange={(e) => onChange({ s3Path: e.target.value })} className="max-w-md" />
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Step 3: Capabilities ──────────────────────────────────────────────────────
+// ── Step 2: Capabilities ──────────────────────────────────────────────────────
 function CapabilityCard({ cap, enabled, onToggle, config, onConfigChange }) {
   const Icon = cap.icon;
   const [expanded, setExpanded] = useState(false);
