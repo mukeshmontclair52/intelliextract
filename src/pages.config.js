@@ -52,8 +52,8 @@ import DocumentConfig from './pages/DocumentConfig';
 import ExtractionConfig from './pages/ExtractionConfig';
 import Onboarding from './pages/Onboarding';
 import Playground from './pages/Playground';
-import Transactions from './pages/Transactions';
 import Support from './pages/Support';
+import Transactions from './pages/Transactions';
 import __Layout from './Layout.jsx';
 
 
@@ -63,8 +63,8 @@ export const PAGES = {
     "ExtractionConfig": ExtractionConfig,
     "Onboarding": Onboarding,
     "Playground": Playground,
-    "Transactions": Transactions,
     "Support": Support,
+    "Transactions": Transactions,
 }
 
 export const pagesConfig = {

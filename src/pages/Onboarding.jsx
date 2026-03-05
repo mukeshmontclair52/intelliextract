@@ -7,7 +7,6 @@ import ProfileDetail from "@/components/onboarding/ProfileDetail";
 import { motion, AnimatePresence } from "framer-motion";
 import StepProfile from "@/components/onboarding/StepProfile";
 import StepDocumentConfig from "@/components/onboarding/StepDocumentConfig";
-import StepDocumentPrefs from "@/components/onboarding/StepDocumentPrefs";
 import StepReview from "@/components/onboarding/StepReview";
 
 const steps = [
