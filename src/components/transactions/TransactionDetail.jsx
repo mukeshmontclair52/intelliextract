@@ -400,10 +400,14 @@ export default function TransactionDetail({ txn, onBack, onRerun, onReject }) {
                 )}
               </div>
 
-              {/* Timeline */}
-              <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-fit">
-                <h3 className="text-sm font-semibold text-slate-700 mb-4">Processing Steps</h3>
-                <StepTimeline steps={txn.steps} />
+              {/* Right column */}
+              <div className="space-y-5">
+                <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm h-fit">
+                  <h3 className="text-sm font-semibold text-slate-700 mb-4">Processing Steps</h3>
+                  <StepTimeline steps={txn.steps} />
+                </div>
+
+                <NotifyCard txnId={txn.id} />
               </div>
             </motion.div>
           )}
