@@ -12,8 +12,7 @@ import StepReview from "@/components/onboarding/StepReview";
 const steps = [
   { id: 0, label: "Profile" },
   { id: 1, label: "Document Config" },
-  { id: 2, label: "Document Prefs" },
-  { id: 3, label: "Review" },
+  { id: 2, label: "Review" },
 ];
 
 const MOCK_PROFILES = [
