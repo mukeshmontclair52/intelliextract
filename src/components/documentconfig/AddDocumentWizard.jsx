@@ -9,14 +9,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DOCUMENT_TYPES = [
-  { value: "alts-schedule", label: "Alts Schedule", desc: "Alternative investments schedule of investments" },
-  { value: "quarterly-report", label: "Quarterly Report", desc: "Fund quarterly performance reports" },
-  { value: "k1-tax", label: "K-1 Tax Document", desc: "Partner tax forms and distributions" },
-  { value: "capital-account", label: "Capital Account Statement", desc: "LP capital account activity" },
-  { value: "financial-statement", label: "Financial Statement", desc: "Balance sheets, P&L, cash flow" },
-  { value: "custom", label: "Custom", desc: "Other document type" },
-];
 
 
 const CAPABILITIES = [
