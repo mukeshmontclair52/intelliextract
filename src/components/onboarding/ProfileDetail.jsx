@@ -94,6 +94,8 @@ const MOCK_AUDIT = [
 export default function ProfileDetail({ profile, onBack, onSave }) {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ ...profile });
+  const [docConfigData, setDocConfigData] = useState({ selectedDocConfigs: profile.selectedDocConfigs || [] });
+  const [docPrefs, setDocPrefs] = useState({ documentType: profile.documentType || "alts-schedule", rawTextModel: profile.rawTextModel || "textract", instructions: profile.instructions || "" });
   const [approverInput, setApproverInput] = useState("");
   const [activeTab, setActiveTab] = useState("details");
   const [saved, setSaved] = useState(false);
