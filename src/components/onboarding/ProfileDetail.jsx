@@ -190,6 +190,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
               {/* Profile Info */}
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5">
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Profile Info</p>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
