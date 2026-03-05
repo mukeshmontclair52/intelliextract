@@ -175,27 +175,7 @@ function ExtractionDetail({ config }) {
     <div className="space-y-3">
       <ConfigBar config={extractConfig} onConfigChange={setExtractConfig} />
       <TaskDescription description={description} onDescriptionChange={setDescription} />
-      <div className="flex gap-4 w-full">
-        <div className="w-[320px] flex-shrink-0">
-          <div className="bg-white rounded-lg border border-slate-200 shadow-sm sticky top-20">
-            <div className="p-3 border-b border-slate-100">
-              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-indigo-500" />Document Preview
-              </h3>
-            </div>
-            <div className="p-3">
-              <div className="aspect-[8.5/11] bg-slate-50 rounded border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400">
-                <FileUp className="w-8 h-8 mb-2 opacity-50" />
-                <p className="text-sm">No document uploaded</p>
-                <Button variant="outline" size="sm" className="mt-3" onClick={() => document.getElementById("doc-upload").click()}>
-                  <FileUp className="w-3.5 h-3.5 mr-1.5" />Upload Document
-                </Button>
-                <input id="doc-upload" type="file" className="hidden" accept=".pdf,.png,.jpg,.jpeg" onChange={(e) => e.target.files?.[0] && setTestDocument(e.target.files[0])} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex-1 space-y-3">
+      <div className="space-y-3">
           <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
             <div className="p-3 border-b border-slate-100">
               <div className="flex items-center justify-between">
