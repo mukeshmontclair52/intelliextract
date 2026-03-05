@@ -153,8 +153,28 @@ export default function Onboarding() {
     setProfiles((prev) => prev.filter((p) => p.id !== id));
   };
 
+  const handleSelectProfile = (p) => {
+    setSelectedProfile(p);
+    setView("detail");
+  };
+
+  const handleSaveProfile = (updated) => {
+    setProfiles(prev => prev.map(p => p.id === updated.id ? updated : p));
+    setSelectedProfile(updated);
+  };
+
+  if (view === "detail" && selectedProfile) {
+    return (
+      <ProfileDetail
+        profile={selectedProfile}
+        onBack={() => setView("list")}
+        onSave={handleSaveProfile}
+      />
+    );
+  }
+
   if (view === "list") {
-    return <ProfileList profiles={profiles} onAdd={handleAddNew} onDelete={handleDelete} />;
+    return <ProfileList profiles={profiles} onAdd={handleAddNew} onDelete={handleDelete} onSelect={handleSelectProfile} />;
   }
 
   return (
