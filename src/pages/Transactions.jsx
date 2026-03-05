@@ -101,12 +101,12 @@ const STATUS_CONFIG = {
   skipped: { label: "Skipped", color: "bg-slate-50 text-slate-500 border-slate-200", icon: Clock },
 };
 
-function StatusBadge({ status, small }) {
+function StatusBadge({ status }) {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.pending;
   const Icon = cfg.icon;
   return (
-    <span className={cn("inline-flex items-center gap-1 font-medium border rounded-full capitalize", cfg.color, small ? "text-xs px-2 py-0.5" : "text-xs px-2.5 py-1")}>
-      <Icon className={cn("flex-shrink-0", small ? "w-2.5 h-2.5" : "w-3 h-3")} />
+    <span className={cn("inline-flex items-center gap-1 font-medium border rounded-full text-xs px-2 py-0.5", cfg.color)}>
+      <Icon className="w-2.5 h-2.5 flex-shrink-0" />
       {cfg.label}
     </span>
   );
