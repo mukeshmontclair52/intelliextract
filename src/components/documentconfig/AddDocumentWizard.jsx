@@ -392,7 +392,6 @@ export default function AddDocumentWizard({ onCancel, onSave }) {
 
   const stepContent = [
     <StepIdentity key="identity" data={data} onChange={update} />,
-    <StepIngestion key="ingestion" data={data} onChange={update} />,
     <StepCapabilities key="capabilities" capabilities={data.capabilities} capConfigs={data.capConfigs} onToggle={toggleCapability} onConfigChange={updateCapConfig} />,
     <StepReview key="review" data={data} />,
   ];
