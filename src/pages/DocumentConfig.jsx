@@ -227,7 +227,6 @@ function ExtractionDetail({ config }) {
               </div>
             </div>
           )}
-        </div>
       </div>
       <div className="flex justify-end gap-3 pt-2">
         <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
