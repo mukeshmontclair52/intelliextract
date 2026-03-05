@@ -126,7 +126,7 @@ export default function Onboarding() {
   const handleAddNew = () => {
     setCurrentStep(0);
     setProfile({});
-    setUseCasesData({ useCases: [] });
+    setDocConfigData({ selectedDocConfigs: [] });
     setDocPrefs({ documentType: "alts-schedule", rawTextModel: "textract" });
     setView("wizard");
   };
