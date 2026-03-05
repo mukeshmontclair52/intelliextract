@@ -204,9 +204,9 @@ export default function Onboarding() {
               className="max-w-3xl"
             >
               {currentStep === 0 && <StepProfile data={profile} onChange={setProfile} />}
-              {currentStep === 1 && <StepUseCases data={useCasesData} onChange={setUseCasesData} />}
+              {currentStep === 1 && <StepDocumentConfig data={docConfigData} onChange={setDocConfigData} />}
               {currentStep === 2 && <StepDocumentPrefs data={docPrefs} onChange={setDocPrefs} />}
-              {currentStep === 3 && <StepReview profile={profile} useCasesData={useCasesData} docPrefs={docPrefs} />}
+              {currentStep === 3 && <StepReview profile={profile} useCasesData={docConfigData} docPrefs={docPrefs} />}
             </motion.div>
           </AnimatePresence>
         </div>
