@@ -145,13 +145,21 @@ export default function Transactions() {
     return matchSearch && matchStatus && matchUseCase;
   });
 
-  const handleRerun = (txn) => {
+  const handleRerunFn = (txn) => {
     setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
+  };
+
+  const handleRejectFn = (txn) => {
+    setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
+  };
+
+  const handleRerun = (txn) => {
+    handleRerunFn(txn);
     setSelectedTxn((prev) => prev?.id === txn.id ? { ...prev, status: "processing" } : prev);
   };
 
   const handleReject = (txn) => {
-    setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
+    handleRejectFn(txn);
     setSelectedTxn((prev) => prev?.id === txn.id ? { ...prev, status: "rejected", rejectedBy: "you@firm.com" } : prev);
   };
 
