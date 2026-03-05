@@ -258,7 +258,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
               </div>
 
               {/* Document Config */}
-              <div className={cn("bg-white border border-slate-200 rounded-xl p-6 shadow-sm", !editing && "pointer-events-none opacity-80")}>
+              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Document Configurations</p>
                 <StepDocumentConfig data={docConfigData} onChange={setDocConfigData} />
               </div>
