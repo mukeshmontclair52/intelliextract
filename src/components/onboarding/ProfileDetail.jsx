@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import StepDocumentConfig from "@/components/onboarding/StepDocumentConfig";
-import StepDocumentPrefs from "@/components/onboarding/StepDocumentPrefs";
 
 function AuditRow({ entry }) {
   const [open, setOpen] = useState(false);
