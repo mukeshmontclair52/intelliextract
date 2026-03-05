@@ -303,7 +303,7 @@ export default function Playground() {
         </div>
 
         {/* Right: Tool Panel */}
-        <div className="w-80 flex flex-col min-h-0 bg-white">
+        <div className="w-[420px] flex flex-col min-h-0 bg-white">
           {activeTool === "split" && <SplitPanel />}
           {activeTool === "parse" && <ParsePanel />}
           {activeTool === "extract" && <ExtractPanel />}
