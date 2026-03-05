@@ -298,32 +298,19 @@ function StepCapabilities({ capabilities, capConfigs, onToggle, onConfigChange }
   );
 }
 
-// ── Step 4: Review ────────────────────────────────────────────────────────────
+// ── Step 3: Review ────────────────────────────────────────────────────────────
 function StepReview({ data }) {
   const enabledCaps = CAPABILITIES.filter((c) => data.capabilities[c.key]);
-  const ingestionMethod = INGESTION_METHODS.find((m) => m.value === data.ingestion);
 
   return (
     <div className="space-y-5 max-w-2xl">
       <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-4">
         <div>
           <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-3">Document Identity</p>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-xs text-slate-400">Name</p>
-              <p className="text-sm font-semibold text-slate-800">{data.name || "—"}</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400">Type</p>
-              <p className="text-sm font-semibold text-slate-800">{data.typeLabel || "—"}</p>
-            </div>
+          <div>
+            <p className="text-xs text-slate-400">Name</p>
+            <p className="text-sm font-semibold text-slate-800">{data.name || "—"}</p>
           </div>
-        </div>
-        <div className="border-t border-slate-200 pt-4">
-          <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-3">Ingestion Source</p>
-          <p className="text-sm font-semibold text-slate-800">{ingestionMethod?.label || "—"}</p>
-          {data.emailFilter && <p className="text-xs text-slate-500 mt-0.5">Filter: {data.emailFilter}</p>}
-          {data.s3Path && <p className="text-xs text-slate-500 mt-0.5">{data.s3Path}</p>}
         </div>
         <div className="border-t border-slate-200 pt-4">
           <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-3">Enabled Capabilities</p>
