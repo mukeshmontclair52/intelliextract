@@ -392,10 +392,12 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
       return acc;
     }, {}),
     preProcessing: initialData.preProcessing || {},
+    postProcessing: initialData.postProcessing || {},
   } : {
     name: "",
     capabilities: {},
     preProcessing: {},
+    postProcessing: {},
   });
 
   const update = (patch) => setData((d) => ({ ...d, ...patch }));
