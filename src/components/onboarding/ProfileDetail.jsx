@@ -111,7 +111,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
   const removeApprover = (email) => setForm(f => ({ ...f, approvers: f.approvers.filter(e => e !== email) }));
 
   const handleSave = () => {
-    onSave(form);
+    onSave({ ...form, selectedDocConfigs: docConfigData.selectedDocConfigs, documentType: docPrefs.documentType, rawTextModel: docPrefs.rawTextModel, instructions: docPrefs.instructions });
     setEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -119,6 +119,8 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
 
   const handleCancel = () => {
     setForm({ ...profile });
+    setDocConfigData({ selectedDocConfigs: profile.selectedDocConfigs || [] });
+    setDocPrefs({ documentType: profile.documentType || "alts-schedule", rawTextModel: profile.rawTextModel || "textract", instructions: profile.instructions || "" });
     setEditing(false);
   };
 
