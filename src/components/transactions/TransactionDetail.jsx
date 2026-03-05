@@ -296,9 +296,18 @@ export default function TransactionDetail({ txn, onBack, onRerun, onReject }) {
               <Button size="sm" variant="outline" onClick={() => onReject(txn)} className="text-orange-600 border-orange-200 hover:bg-orange-50 h-8 text-xs">
                 <ThumbsDown className="w-3.5 h-3.5 mr-1" />Reject
               </Button>
-              <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 h-8 text-xs">
-                <Download className="w-3.5 h-3.5 mr-1" />Download
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 h-8 text-xs">
+                    <Download className="w-3.5 h-3.5 mr-1" />Download<ChevronDown className="w-3 h-3 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem><FileText className="w-3.5 h-3.5 mr-2 text-slate-400" />Original Document</DropdownMenuItem>
+                  <DropdownMenuItem><Download className="w-3.5 h-3.5 mr-2 text-slate-400" />JSON Before Review</DropdownMenuItem>
+                  <DropdownMenuItem><Download className="w-3.5 h-3.5 mr-2 text-slate-400" />JSON After Review</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           )}
         </div>
