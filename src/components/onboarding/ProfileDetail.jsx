@@ -109,7 +109,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
   const removeApprover = (email) => setForm(f => ({ ...f, approvers: f.approvers.filter(e => e !== email) }));
 
   const handleSave = () => {
-    onSave({ ...form, selectedDocConfigs: docConfigData.selectedDocConfigs, documentType: docPrefs.documentType, rawTextModel: docPrefs.rawTextModel, instructions: docPrefs.instructions });
+    onSave({ ...form, selectedDocConfigs: docConfigData.selectedDocConfigs });
     setEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
