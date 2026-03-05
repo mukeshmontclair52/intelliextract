@@ -433,6 +433,7 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
     <StepIdentity key="identity" data={data} onChange={update} />,
     <StepCapabilities key="capabilities" capabilities={data.capabilities} onSelect={selectCapability} />,
     <StepPreProcessing key="preprocessing" settings={data.preProcessing} onChange={(preProcessing) => update({ preProcessing })} />,
+    <StepPostProcessing key="postprocessing" settings={data.postProcessing} onChange={(postProcessing) => update({ postProcessing })} />,
     <StepReview key="review" data={data} />,
   ];
 
