@@ -153,18 +153,16 @@ function RedactionPatternsInput({ patterns, onChange }) {
   );
 }
 
-function StepCapabilities({ capabilities, capConfigs, onToggle, onConfigChange }) {
+function StepCapabilities({ capabilities, onSelect }) {
   return (
     <div className="space-y-3 max-w-2xl">
-      <p className="text-sm text-slate-500">Enable the processing capabilities you need for this document type. You can configure details now or after saving.</p>
+      <p className="text-sm text-slate-500">Select one processing capability for this document type.</p>
       {CAPABILITIES.map((cap) => (
         <CapabilityCard
           key={cap.key}
           cap={cap}
           enabled={!!capabilities[cap.key]}
-          onToggle={() => onToggle(cap.key)}
-          config={capConfigs[cap.key] || {}}
-          onConfigChange={(updates) => onConfigChange(cap.key, updates)}
+          onSelect={() => onSelect(cap.key)}
         />
       ))}
     </div>
