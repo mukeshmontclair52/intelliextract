@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ConfigBar from "@/components/extraction/ConfigBar";
 import TaskDescription from "@/components/extraction/TaskDescription";
 import FieldCard from "@/components/extraction/FieldCard";
+import AddDocumentWizard from "@/components/documentconfig/AddDocumentWizard";
 
 const DOCUMENTS = [
   {
