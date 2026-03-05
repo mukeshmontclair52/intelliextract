@@ -97,6 +97,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
   const [approverInput, setApproverInput] = useState("");
   const [activeTab, setActiveTab] = useState("details");
   const [saved, setSaved] = useState(false);
+  const [isActive, setIsActive] = useState(profile.isActive !== false);
 
   const addApprover = () => {
     const email = approverInput.trim();
