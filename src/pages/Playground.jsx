@@ -257,8 +257,36 @@ export default function Playground() {
   const [file, setFile] = useState(null);
   const [activeTool, setActiveTool] = useState("split");
   const [page, setPage] = useState(1);
+  // leftPct: percentage of total width for the doc panel (35–75%)
+  const [leftPct, setLeftPct] = useState(38);
+  const containerRef = React.useRef(null);
+  const dragging = React.useRef(false);
 
   const handleUpload = () => document.getElementById("playground-upload").click();
+
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    dragging.current = true;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  };
+
+  React.useEffect(() => {
+    const onMove = (e) => {
+      if (!dragging.current || !containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const pct = ((e.clientX - rect.left) / rect.width) * 100;
+      setLeftPct(Math.min(70, Math.max(25, pct)));
+    };
+    const onUp = () => {
+      dragging.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-white overflow-hidden">
@@ -292,9 +320,9 @@ export default function Playground() {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 min-h-0">
+      <div ref={containerRef} className="flex flex-1 min-h-0 relative">
         {/* Left: Doc area */}
-        <div className="flex-1 flex flex-col min-h-0 border-r border-slate-200">
+        <div className="flex flex-col min-h-0 overflow-hidden" style={{ width: `${leftPct}%` }}>
           {file ? (
             <DocViewer file={file} page={page} totalPages={7} onPageChange={setPage} />
           ) : (
@@ -302,8 +330,20 @@ export default function Playground() {
           )}
         </div>
 
+        {/* Drag handle */}
+        <div
+          onMouseDown={onMouseDown}
+          className="w-1.5 flex-shrink-0 bg-slate-200 hover:bg-indigo-400 cursor-col-resize transition-colors relative group"
+        >
+          <div className="absolute inset-y-0 -left-1 -right-1" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-0.5">
+            <div className="w-0.5 h-3 bg-slate-400 rounded-full group-hover:bg-indigo-200" />
+            <div className="w-0.5 h-3 bg-slate-400 rounded-full group-hover:bg-indigo-200" />
+          </div>
+        </div>
+
         {/* Right: Tool Panel */}
-        <div className="w-[420px] flex flex-col min-h-0 bg-white">
+        <div className="flex flex-col min-h-0 bg-white overflow-hidden" style={{ width: `${100 - leftPct}%` }}>
           {activeTool === "split" && <SplitPanel />}
           {activeTool === "parse" && <ParsePanel />}
           {activeTool === "extract" && <ExtractPanel />}
