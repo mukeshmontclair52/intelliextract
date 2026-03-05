@@ -262,11 +262,7 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
                 <StepDocumentConfig data={docConfigData} onChange={setDocConfigData} />
               </div>
 
-              {/* Document Prefs */}
-              <div className={cn("bg-white border border-slate-200 rounded-xl p-6 shadow-sm", !editing && "pointer-events-none opacity-80")}>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Document Preferences</p>
-                <StepDocumentPrefs data={docPrefs} onChange={setDocPrefs} />
-              </div>
+
             </motion.div>
           )}
 
