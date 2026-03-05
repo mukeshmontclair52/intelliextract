@@ -58,7 +58,8 @@ function ProfileList({ profiles, onAdd, onDelete, onSelect }) {
             key={p.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
+            onClick={() => onSelect(p)}
+          className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
