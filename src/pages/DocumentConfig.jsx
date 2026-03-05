@@ -285,7 +285,7 @@ function SplitDetail({ config }) {
         <p className="text-sm font-semibold text-slate-700">{config.model}</p>
       </div>
       <div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Split Categories ({config.categories.length})</p>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Split Categories ({(config.categories || []).length})</p>
         <div className="flex flex-wrap gap-2">
           {config.categories.map((c) => (
             <span key={c} className="text-xs bg-purple-50 text-purple-700 border border-purple-100 px-2.5 py-1 rounded-full font-medium">{c}</span>
