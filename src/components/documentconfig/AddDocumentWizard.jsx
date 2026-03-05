@@ -204,7 +204,104 @@ function StepPreProcessing({ settings, onChange }) {
   );
 }
 
-// ── Step 3: Review ────────────────────────────────────────────────────────────
+// ── Step 3: Post-Processing ──────────────────────────────────────────────────
+function StepPostProcessing({ settings, onChange }) {
+  const formats = [
+    { key: "json", label: "JSON", icon: FileJson, desc: "Structured JSON format for API integration." },
+    { key: "csv", label: "CSV", icon: FileJson, desc: "Comma-separated values for spreadsheets." },
+    { key: "xml", label: "XML", icon: FileJson, desc: "XML format for enterprise systems." },
+  ];
+
+  const storageOptions = [
+    { key: "localStorage", label: "Local Storage", desc: "Store in local file system." },
+    { key: "s3", label: "AWS S3", desc: "Store in Amazon S3 bucket." },
+    { key: "googleCloud", label: "Google Cloud", desc: "Store in Google Cloud Storage." },
+  ];
+
+  const notificationOptions = [
+    { key: "email", label: "Email Notification", desc: "Send notification when processing completes." },
+    { key: "webhook", label: "Webhook", desc: "Post results to external webhook URL." },
+    { key: "slack", label: "Slack", desc: "Send notification to Slack channel." },
+  ];
+
+  return (
+    <div className="space-y-5 max-w-2xl">
+      {/* Output Format */}
+      <div>
+        <p className="text-sm text-slate-500 mb-3 flex items-center gap-1.5"><FileJson className="w-4 h-4" />Output Format</p>
+        <div className="grid grid-cols-3 gap-2">
+          {formats.map(({ key, label, desc }) => (
+            <button
+              key={key}
+              onClick={() => onChange({ ...settings, outputFormat: key })}
+              className={cn(
+                "rounded-lg border-2 p-3 text-left transition-all",
+                settings.outputFormat === key
+                  ? "border-indigo-600 bg-indigo-50"
+                  : "border-slate-200 bg-white hover:border-slate-300"
+              )}
+            >
+              <p className={cn("text-sm font-semibold", settings.outputFormat === key ? "text-slate-800" : "text-slate-600")}>{label}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Storage Options */}
+      <div>
+        <p className="text-sm text-slate-500 mb-3 flex items-center gap-1.5"><HardDrive className="w-4 h-4" />Storage Options</p>
+        <div className="space-y-2">
+          {storageOptions.map(({ key, label, desc }) => (
+            <div
+              key={key}
+              onClick={() => onChange({ ...settings, storage: settings.storage === key ? null : key })}
+              className={cn(
+                "rounded-lg border-2 p-3 flex items-start justify-between gap-3 cursor-pointer transition-all",
+                settings.storage === key ? "border-indigo-200 bg-indigo-50" : "border-slate-200 bg-white hover:border-slate-300"
+              )}
+            >
+              <div>
+                <p className={cn("text-sm font-semibold", settings.storage === key ? "text-slate-800" : "text-slate-600")}>{label}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+              </div>
+              <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5", settings.storage === key ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
+                {settings.storage === key && <Check className="w-3 h-3 text-white" />}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Notifications */}
+      <div>
+        <p className="text-sm text-slate-500 mb-3 flex items-center gap-1.5"><Bell className="w-4 h-4" />Notification Options</p>
+        <div className="space-y-2">
+          {notificationOptions.map(({ key, label, desc }) => (
+            <div
+              key={key}
+              onClick={() => onChange({ ...settings, notifications: settings.notifications?.includes(key) ? settings.notifications.filter(n => n !== key) : [...(settings.notifications || []), key] })}
+              className={cn(
+                "rounded-lg border-2 p-3 flex items-start justify-between gap-3 cursor-pointer transition-all",
+                settings.notifications?.includes(key) ? "border-indigo-200 bg-indigo-50" : "border-slate-200 bg-white hover:border-slate-300"
+              )}
+            >
+              <div>
+                <p className={cn("text-sm font-semibold", settings.notifications?.includes(key) ? "text-slate-800" : "text-slate-600")}>{label}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+              </div>
+              <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5", settings.notifications?.includes(key) ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
+                {settings.notifications?.includes(key) && <Check className="w-3 h-3 text-white" />}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Step 4: Review ────────────────────────────────────────────────────────────
 function StepReview({ data }) {
   const enabledCaps = CAPABILITIES.filter((c) => data.capabilities[c.key]);
 
