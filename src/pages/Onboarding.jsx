@@ -94,10 +94,11 @@ function ProfileList({ profiles, onAdd, onDelete, onSelect }) {
                   variant="ghost"
                   size="icon"
                   className="text-slate-300 hover:text-red-500 h-8 w-8"
-                  onClick={() => onDelete(p.id)}
+                  onClick={(e) => { e.stopPropagation(); onDelete(p.id); }}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
+                <ChevronRight className="w-4 h-4 text-slate-300" />
               </div>
             </div>
           </motion.div>
