@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronRight, ChevronLeft, Plus, AppWindow, Mail, Zap, Tag, Trash2, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import StepProfile from "@/components/onboarding/StepProfile";
-import StepUseCases from "@/components/onboarding/StepUseCases";
+import StepDocumentConfig from "@/components/onboarding/StepDocumentConfig";
 import StepDocumentPrefs from "@/components/onboarding/StepDocumentPrefs";
 import StepReview from "@/components/onboarding/StepReview";
 
