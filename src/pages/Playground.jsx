@@ -161,7 +161,7 @@ export default function Playground() {
   const handleUpload = () => document.getElementById("playground-upload").click();
 
   return (
-    <div className="flex flex-col h-[calc(100vh)] bg-white">
+    <div className="flex flex-col h-screen bg-white overflow-hidden">
       {/* Top toolbar */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 bg-white">
         <div className="flex items-center gap-1">
