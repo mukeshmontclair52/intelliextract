@@ -318,8 +318,8 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
         <ArrowLeft className="w-4 h-4" />Back to documents
       </button>
 
-      <h1 className="text-2xl font-bold text-slate-800 mb-1">Add Document Configuration</h1>
-      <p className="text-sm text-slate-500 mb-8">Set up how this document type will be processed by the system.</p>
+      <h1 className="text-2xl font-bold text-slate-800 mb-1">{isEditing ? "Edit" : "Add"} Document Configuration</h1>
+      <p className="text-sm text-slate-500 mb-8">{isEditing ? "Update" : "Set up"} how this document type will be processed by the system.</p>
 
       {/* Progress */}
       <div className="flex items-center gap-0 mb-10">
