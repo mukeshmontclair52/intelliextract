@@ -79,12 +79,14 @@ function StepIdentity({ data, onChange }) {
 }
 
 // ── Step 2: Capabilities ──────────────────────────────────────────────────────
-function CapabilityCard({ cap, enabled, onToggle, config, onConfigChange }) {
+function CapabilityCard({ cap, enabled, onSelect }) {
   const Icon = cap.icon;
-  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={cn("rounded-xl border-2 transition-all", enabled ? `${cap.border} ${cap.bg}` : "border-slate-200 bg-white")}>
+    <div
+      onClick={onSelect}
+      className={cn("rounded-xl border-2 transition-all cursor-pointer", enabled ? `${cap.border} ${cap.bg}` : "border-slate-200 bg-white hover:border-slate-300")}
+    >
       <div className="p-4 flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0", enabled ? cap.bg : "bg-slate-100")}>
@@ -95,125 +97,10 @@ function CapabilityCard({ cap, enabled, onToggle, config, onConfigChange }) {
             <p className="text-xs text-slate-500 mt-0.5 max-w-sm">{cap.desc}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {enabled && (
-            <button onClick={() => setExpanded(!expanded)} className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1">
-              Configure <ChevronRight className={cn("w-3 h-3 transition-transform", expanded && "rotate-90")} />
-            </button>
-          )}
-          <button
-            onClick={onToggle}
-            className={cn(
-              "relative w-11 h-6 rounded-full transition-colors flex-shrink-0",
-              enabled ? "bg-indigo-600" : "bg-slate-200"
-            )}
-          >
-            <span className={cn("absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform", enabled && "translate-x-5")} />
-          </button>
+        <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1", enabled ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
+          {enabled && <div className="w-2 h-2 rounded-full bg-white" />}
         </div>
       </div>
-
-      <AnimatePresence>
-        {enabled && expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="px-4 pb-4 border-t border-slate-200/60 pt-3 space-y-3">
-              {cap.key === "extraction" && (
-                <>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-xs font-medium text-slate-600 mb-1 block">Engine</label>
-                      <select
-                        className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white"
-                        value={config.engine || "gen-ai"}
-                        onChange={(e) => onConfigChange({ engine: e.target.value })}
-                      >
-                        <option value="gen-ai">Gen AI - LLM</option>
-                        <option value="template">Template Based</option>
-                        <option value="hybrid">Hybrid</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-600 mb-1 block">Model</label>
-                      <select
-                        className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white"
-                        value={config.model || "gpt-4-turbo"}
-                        onChange={(e) => onConfigChange({ model: e.target.value })}
-                      >
-                        <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                        <option value="gpt-4o">GPT-4o</option>
-                        <option value="gpt-3.5">GPT-3.5</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-slate-600 mb-1 block">Task Description <span className="text-slate-400 font-normal">(optional — AI will auto-generate)</span></label>
-                    <textarea
-                      rows={2}
-                      className="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white resize-none"
-                      placeholder="Describe what to extract…"
-                      value={config.description || ""}
-                      onChange={(e) => onConfigChange({ description: e.target.value })}
-                    />
-                  </div>
-                  <p className="text-xs text-indigo-600 flex items-center gap-1 cursor-pointer hover:underline">
-                    <Sparkles className="w-3 h-3" />You can configure extraction fields in detail after saving
-                  </p>
-                </>
-              )}
-              {cap.key === "parse" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-xs font-medium text-slate-600 mb-1 block">Engine</label>
-                    <select className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white" value={config.engine || "gen-ai"} onChange={(e) => onConfigChange({ engine: e.target.value })}>
-                      <option value="gen-ai">Gen AI - LLM</option>
-                      <option value="template">Template Based</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-slate-600 mb-1 block">Output Format</label>
-                    <select className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white" value={config.outputFormat || "markdown"} onChange={(e) => onConfigChange({ outputFormat: e.target.value })}>
-                      <option value="markdown">Markdown</option>
-                      <option value="plain">Plain Text</option>
-                      <option value="json">JSON</option>
-                    </select>
-                  </div>
-                </div>
-              )}
-              {cap.key === "split" && (
-                <>
-                  <div>
-                    <label className="text-xs font-medium text-slate-600 mb-1 block">Model</label>
-                    <select className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white max-w-xs" value={config.model || "gpt-4o"} onChange={(e) => onConfigChange({ model: e.target.value })}>
-                      <option value="gpt-4o">GPT-4o</option>
-                      <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                    </select>
-                  </div>
-                  <SplitCategoriesInput categories={config.categories || []} onChange={(cats) => onConfigChange({ categories: cats })} />
-                </>
-              )}
-              {cap.key === "redaction" && (
-                <>
-                  <div>
-                    <label className="text-xs font-medium text-slate-600 mb-1 block">Redaction Method</label>
-                    <select className="w-full text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white max-w-xs" value={config.method || "black-box"} onChange={(e) => onConfigChange({ method: e.target.value })}>
-                      <option value="black-box">Black Box (full cover)</option>
-                      <option value="mask">Mask (replace with ***)</option>
-                      <option value="tokenize">Tokenize (replace with token)</option>
-                    </select>
-                  </div>
-                  <RedactionPatternsInput patterns={config.patterns || []} onChange={(p) => onConfigChange({ patterns: p })} />
-                </>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
