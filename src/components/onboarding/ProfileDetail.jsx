@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft, Save, X, Plus, AppWindow, Mail, Hash, UserCheck,
-  Clock, User, ChevronDown, ChevronUp, Edit2, Check, Power
+  Clock, User, ChevronDown, ChevronUp, Edit2, Check, Power, IdCard
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import StepDocumentConfig from "@/components/onboarding/StepDocumentConfig";
