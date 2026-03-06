@@ -95,6 +95,8 @@ export default function ProfileDetail({ profile, onBack, onSave }) {
   const [form, setForm] = useState({ ...profile });
   const [docConfigData, setDocConfigData] = useState({ selectedDocConfigs: profile.selectedDocConfigs || [] });
   const [approverInput, setApproverInput] = useState("");
+  const [fidInput, setFidInput] = useState("");
+  const [sidInput, setSidInput] = useState("");
   const [activeTab, setActiveTab] = useState("details");
   const [saved, setSaved] = useState(false);
   const [isActive, setIsActive] = useState(profile.isActive !== false);
