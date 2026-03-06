@@ -226,14 +226,148 @@ function ParsePanel() {
   );
 }
 
+const MOCK_DOC_CONFIGS = [
+  { id: 1, name: "Invoice Processing", prompt: "Extract invoice number, vendor name, total amount, line items, and due date." },
+  { id: 2, name: "Tax Statement", prompt: "Extract account number, tax year, income totals, dividends, and tax withheld." },
+  { id: 3, name: "KYC Document", prompt: "Extract full name, date of birth, address, ID number, and expiry date." },
+  { id: 4, name: "Bank Statement", prompt: "Extract account holder, account number, statement period, opening and closing balance, and transactions." },
+];
+
 function ExtractPanel() {
+  const [mode, setMode] = useState(null); // null | "prompt" | "json" | "scratch" | "docconfig"
+  const [prompt, setPrompt] = useState("");
+  const [generating, setGenerating] = useState(false);
+  const [showDocPicker, setShowDocPicker] = useState(false);
+  const [selectedConfig, setSelectedConfig] = useState(null);
+
+  const handleGenerate = () => {
+    setGenerating(true);
+    setTimeout(() => setGenerating(false), 2000);
+  };
+
+  const handleSelectConfig = (cfg) => {
+    setSelectedConfig(cfg);
+    setPrompt(cfg.prompt);
+    setMode("prompt");
+    setShowDocPicker(false);
+  };
+
   return (
-    <div className="flex flex-col h-full p-4">
-      <p className="text-sm font-semibold text-slate-700 mb-3">Extract Fields</p>
-      <div className="flex-1 bg-slate-50 rounded-lg border border-slate-200 p-3 text-xs text-slate-500 overflow-auto">
-        Upload a document and run Extract to pull key fields like names, dates, and totals.
+    <div className="flex flex-col h-full overflow-auto">
+      {/* Header */}
+      <div className="px-5 pt-5 pb-3 border-b border-slate-100 flex-shrink-0">
+        <h2 className="text-base font-semibold text-slate-800 mb-1">Schema</h2>
       </div>
-      <Button className="mt-3 bg-amber-500 hover:bg-amber-600 w-full">Run Extract</Button>
+
+      <div className="flex-1 overflow-auto p-5 space-y-3">
+
+        {/* Pick from Document Config */}
+        <div className="border border-slate-200 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setShowDocPicker(!showDocPicker)}
+            className="w-full flex items-center justify-between px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            <div className="flex items-center gap-2">
+              <FolderOpen className="w-4 h-4 text-indigo-500" />
+              <span className="font-medium">
+                {selectedConfig ? (
+                  <span>Using: <span className="text-indigo-600">{selectedConfig.name}</span></span>
+                ) : (
+                  "Pick from Document Config"
+                )}
+              </span>
+            </div>
+            <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform", showDocPicker && "rotate-180")} />
+          </button>
+          {showDocPicker && (
+            <div className="border-t border-slate-100 divide-y divide-slate-100">
+              {MOCK_DOC_CONFIGS.map((cfg) => (
+                <button
+                  key={cfg.id}
+                  onClick={() => handleSelectConfig(cfg)}
+                  className={cn(
+                    "w-full text-left px-4 py-3 text-sm hover:bg-slate-50 transition-colors",
+                    selectedConfig?.id === cfg.id && "bg-indigo-50"
+                  )}
+                >
+                  <p className={cn("font-medium", selectedConfig?.id === cfg.id ? "text-indigo-700" : "text-slate-700")}>{cfg.name}</p>
+                  <p className="text-xs text-slate-400 mt-0.5 truncate">{cfg.prompt}</p>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Generate with prompt */}
+        <div
+          className={cn(
+            "rounded-xl border-2 transition-all",
+            mode === "prompt" ? "border-indigo-300 bg-indigo-50/40" : "border-slate-200 bg-white"
+          )}
+        >
+          <button
+            onClick={() => setMode(mode === "prompt" ? null : "prompt")}
+            className="w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-slate-700"
+          >
+            <Sparkles className="w-4 h-4 text-indigo-500" />
+            Write a Schema Prompt
+          </button>
+          {mode === "prompt" && (
+            <div className="px-4 pb-4 space-y-3">
+              <p className="text-xs text-indigo-600">Schema generation uses the first 10 pages of your document.</p>
+              <textarea
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+                rows={4}
+                placeholder="Describe the fields you need (e.g. invoice number, date, total amount)."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+              />
+              <Button
+                onClick={handleGenerate}
+                disabled={generating || !prompt.trim()}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm"
+              >
+                {generating ? (
+                  <><RefreshCw className="w-3.5 h-3.5 mr-2 animate-spin" />Generating…</>
+                ) : (
+                  <><Sparkles className="w-3.5 h-3.5 mr-2" />Generate Schema</>
+                )}
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Upload JSON */}
+        <button
+          onClick={() => setMode("json")}
+          className={cn(
+            "w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all",
+            mode === "json" ? "border-indigo-300 bg-indigo-50/40 text-indigo-700" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+          )}
+        >
+          <FileJson className="w-4 h-4 text-slate-400" />
+          Upload JSON Schema
+        </button>
+
+        {/* Start from Scratch */}
+        <button
+          onClick={() => setMode("scratch")}
+          className={cn(
+            "w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all",
+            mode === "scratch" ? "border-indigo-300 bg-indigo-50/40 text-indigo-700" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+          )}
+        >
+          <Plus className="w-4 h-4 text-slate-400" />
+          Start from Scratch
+        </button>
+      </div>
+
+      {/* Footer */}
+      <div className="border-t border-slate-100 px-4 py-2.5 flex justify-end bg-white flex-shrink-0">
+        <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-xs h-7">
+          <FileSearch2 className="w-3 h-3 mr-1" />Run Extract
+        </Button>
+      </div>
     </div>
   );
 }
