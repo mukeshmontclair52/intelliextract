@@ -147,23 +147,6 @@ export default function Transactions() {
     setFiltered([]); setHasSearched(false);
   };
 
-  if (selectedTxn) {
-    return (
-      <TransactionDetail
-        txn={selectedTxn}
-        onBack={() => setSelectedTxn(null)}
-        onRerun={(txn) => {
-          handleRerunFn(txn);
-          setSelectedTxn(prev => prev?.id === txn.id ? { ...prev, status: "processing" } : prev);
-        }}
-        onReject={(txn) => {
-          handleRejectFn(txn);
-          setSelectedTxn(prev => prev?.id === txn.id ? { ...prev, status: "rejected", rejectedBy: "you@firm.com" } : prev);
-        }}
-      />
-    );
-  }
-
   const handleRerunFn = (txn) => {
     setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
     setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
@@ -183,6 +166,23 @@ export default function Transactions() {
     handleRejectFn(txn);
     setSelectedTxn((prev) => prev?.id === txn.id ? { ...prev, status: "rejected", rejectedBy: "you@firm.com" } : prev);
   };
+
+  if (selectedTxn) {
+    return (
+      <TransactionDetail
+        txn={selectedTxn}
+        onBack={() => setSelectedTxn(null)}
+        onRerun={(txn) => {
+          handleRerunFn(txn);
+          setSelectedTxn(prev => prev?.id === txn.id ? { ...prev, status: "processing" } : prev);
+        }}
+        onReject={(txn) => {
+          handleRejectFn(txn);
+          setSelectedTxn(prev => prev?.id === txn.id ? { ...prev, status: "rejected", rejectedBy: "you@firm.com" } : prev);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
