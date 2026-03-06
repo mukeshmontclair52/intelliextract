@@ -300,11 +300,12 @@ export default function Transactions() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="text-center py-16 text-slate-400 text-sm">No transactions match your filters.</td>
+                  <td colSpan={8} className="text-center py-16 text-slate-400 text-sm">No transactions match your search criteria.</td>
                 </tr>
               )}
             </tbody>
           </table>
+          )}
         </div>
       </div>
 
