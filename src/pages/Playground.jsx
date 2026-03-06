@@ -366,7 +366,7 @@ function ExtractPanel({ onRunExtract }) {
 
       {/* Footer */}
       <div className="border-t border-slate-100 px-4 py-2.5 flex justify-end bg-white flex-shrink-0">
-        <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-xs h-7">
+        <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-xs h-7" onClick={onRunExtract}>
           <FileSearch2 className="w-3 h-3 mr-1" />Run Extract
         </Button>
       </div>
