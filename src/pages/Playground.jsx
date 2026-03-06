@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Upload, FileText, Download, ChevronLeft, ChevronRight, Plus, Share2, Scissors, Scan, FileSearch2, MessageSquare, X, Lightbulb, FileJson, PenLine, RefreshCw, Copy, RotateCcw, Sparkles, FolderOpen, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
