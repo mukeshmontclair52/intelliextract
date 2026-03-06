@@ -59,7 +59,100 @@ function TypingIndicator() {
   );
 }
 
+function ContactCard({ icon: Icon, color, title, desc, contact, channel }) {
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 p-4 flex gap-3 items-start shadow-sm">
+      <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}>
+        <Icon className="w-4 h-4 text-white" />
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm font-semibold text-slate-800">{title}</p>
+        <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+        <div className="mt-2 flex flex-col gap-1">
+          {contact && <span className="text-xs text-indigo-600 font-medium">{contact}</span>}
+          {channel && <span className="text-xs text-slate-500">{channel}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SnowTicketSteps() {
+  const steps = [
+    "Go to the ServiceNow portal at <strong>snow.internal.company.com</strong>",
+    "Click <strong>Create New Incident</strong> or <strong>Request</strong>",
+    "Set <strong>Category</strong> to <em>Data Platform</em> and <strong>Sub-category</strong> to <em>DocExtract</em>",
+    "Fill in the description — include doc type, environment, and error details",
+    "Set priority and assign to the <strong>DocExtract</strong> team",
+    "Submit and save your ticket number for reference",
+  ];
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2">
+        <Ticket className="w-4 h-4 text-violet-600" />
+        <p className="text-sm font-semibold text-slate-800">How to Create a SNOW Ticket</p>
+      </div>
+      <ol className="px-4 py-3 space-y-2">
+        {steps.map((step, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-xs text-slate-600">
+            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-violet-100 text-violet-700 font-bold flex items-center justify-center text-[10px]">{i + 1}</span>
+            <span dangerouslySetInnerHTML={{ __html: step }} />
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function NotifyTeamsModal({ onClose }) {
+  const [sent, setSent] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleSend = () => {
+    if (!msg.trim()) return;
+    setSent(true);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+        {sent ? (
+          <div className="flex flex-col items-center py-4 text-center">
+            <CheckCircle className="w-12 h-12 text-emerald-500 mb-3" />
+            <p className="font-semibold text-slate-800">Both teams have been notified!</p>
+            <p className="text-xs text-slate-500 mt-1">Tech & Business teams will get back to you shortly.</p>
+            <Button className="mt-5 bg-indigo-600 hover:bg-indigo-700 w-full" onClick={onClose}>Done</Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold text-slate-800 text-sm">Notify Tech & Business Teams</h2>
+              <button onClick={onClose}><X className="w-4 h-4 text-slate-400" /></button>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">Your message will be sent to both the <strong>Tech team</strong> (tech-support@docextract.io) and <strong>Business team</strong> (business@docextract.io).</p>
+            <textarea
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              placeholder="Describe your question or what you need help with…"
+              rows={4}
+              className="w-full resize-none border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-300 bg-slate-50 text-slate-700 placeholder-slate-400"
+            />
+            <Button
+              className="mt-3 bg-indigo-600 hover:bg-indigo-700 w-full"
+              disabled={!msg.trim()}
+              onClick={handleSend}
+            >
+              <Bell className="w-4 h-4 mr-2" />Send Notification
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Support() {
+  const [showModal, setShowModal] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
