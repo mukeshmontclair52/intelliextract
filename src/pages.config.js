@@ -54,6 +54,7 @@ import Playground from './pages/Playground';
 import Support from './pages/Support';
 import Transactions from './pages/Transactions';
 import DocumentConfig from './pages/DocumentConfig';
+import ExtractionResult from './pages/ExtractionResult';
 import __Layout from './Layout.jsx';
 
 
@@ -65,6 +66,7 @@ export const PAGES = {
     "Support": Support,
     "Transactions": Transactions,
     "DocumentConfig": DocumentConfig,
+    "ExtractionResult": ExtractionResult,
 }
 
 export const pagesConfig = {
