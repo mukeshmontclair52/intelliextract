@@ -88,13 +88,15 @@ export default function StepReview({ profile, useCasesData, docPrefs }) {
       </div>
 
       {/* Document Prefs */}
-      <div>
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Document Preferences</p>
-        <div className="bg-white rounded-lg border border-slate-200 px-4">
-          <ReviewRow icon={FileText} label="Document Type" value={docTypeLabels[docPrefs.documentType] || docPrefs.documentType} />
-          <ReviewRow icon={FileText} label="Raw Text Model" value={docPrefs.rawTextModel} />
+      {docPrefs && (
+        <div>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Document Preferences</p>
+          <div className="bg-white rounded-lg border border-slate-200 px-4">
+            <ReviewRow icon={FileText} label="Document Type" value={docTypeLabels[docPrefs.documentType] || docPrefs.documentType} />
+            <ReviewRow icon={FileText} label="Raw Text Model" value={docPrefs.rawTextModel} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
