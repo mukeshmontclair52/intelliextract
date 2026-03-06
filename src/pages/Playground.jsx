@@ -235,7 +235,7 @@ const MOCK_DOC_CONFIGS = [
   { id: 4, name: "Bank Statement", prompt: "Extract account holder, account number, statement period, opening and closing balance, and transactions." },
 ];
 
-function ExtractPanel() {
+function ExtractPanel({ onRunExtract }) {
   const [mode, setMode] = useState(null); // null | "prompt" | "json" | "scratch" | "docconfig"
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
