@@ -166,10 +166,12 @@ export default function Transactions() {
 
   const handleRerunFn = (txn) => {
     setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
+    setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
   };
 
   const handleRejectFn = (txn) => {
     setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
+    setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
   };
 
   const handleRerun = (txn) => {
