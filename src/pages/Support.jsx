@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { KNOWLEDGE_BASE } from "../components/support/knowledgeBase";
 import { Button } from "@/components/ui/button";
-import { Send, Bot, User, LifeBuoy } from "lucide-react";
+import { Send, Bot, User, LifeBuoy, Code2, Briefcase, Ticket, Bell, CheckCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SUGGESTED_QUESTIONS = [
