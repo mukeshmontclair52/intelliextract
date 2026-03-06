@@ -483,7 +483,7 @@ export default function Playground() {
         <div className="flex flex-col min-h-0 bg-white overflow-hidden" style={{ width: `${100 - leftPct}%` }}>
           {activeTool === "split" && <SplitPanel />}
           {activeTool === "parse" && <ParsePanel />}
-          {activeTool === "extract" && <ExtractPanel />}
+          {activeTool === "extract" && <ExtractPanel onRunExtract={() => navigate(createPageUrl("ExtractionResult"))} />}
           {activeTool === "chat" && <ChatPanel />}
         </div>
       </div>
