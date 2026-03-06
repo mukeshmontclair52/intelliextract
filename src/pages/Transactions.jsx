@@ -141,8 +141,9 @@ function StatusBadge({ status }) {
 export default function Transactions() {
   // Search fields
   const [txnId, setTxnId] = useState("");
-  const [profileId, setProfileId] = useState("");
-  const [docConfigId, setDocConfigId] = useState("");
+  const [profileId, setProfileId] = useState("all");
+  const [docConfigId, setDocConfigId] = useState("all");
+  const [functionalId, setFunctionalId] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
