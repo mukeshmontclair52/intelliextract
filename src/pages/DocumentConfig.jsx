@@ -468,7 +468,7 @@ function RedactionDetail({ config }) {
   );
 }
 
-function DocumentDetail({ doc, onBack, onEdit }) {
+function DocumentDetail({ doc, onBack, onEdit, allDocuments }) {
   const hasOnlyExtraction = doc.configs.extraction?.enabled && !doc.configs.parse?.enabled && !doc.configs.split?.enabled && !doc.configs.redaction?.enabled;
   const [activeTab, setActiveTab] = useState(hasOnlyExtraction ? "extraction" : "extraction");
   const activeConfigs = CONFIG_TABS.filter((t) => doc.configs[t.key]?.enabled);
