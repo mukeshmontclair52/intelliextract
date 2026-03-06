@@ -207,9 +207,44 @@ export default function Support() {
           <h1 className="font-semibold text-slate-800 text-sm">DocExtract Support</h1>
           <p className="text-xs text-slate-500">Ask anything about integration, configuration, or usage</p>
         </div>
-        <div className="ml-auto flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span className="text-xs text-slate-500">Online</span>
+        <div className="ml-auto flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="text-xs text-slate-500">Online</span>
+          </div>
+          <Button
+            size="sm"
+            className="bg-indigo-600 hover:bg-indigo-700 text-xs h-8 gap-1.5"
+            onClick={() => setShowModal(true)}
+          >
+            <Bell className="w-3.5 h-3.5" />Notify Teams
+          </Button>
+        </div>
+      </div>
+
+      {/* Contact & SNOW info panel */}
+      <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Contact & Escalation</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+            <ContactCard
+              icon={Code2}
+              color="bg-indigo-500"
+              title="Tech Team"
+              desc="For technical issues, API errors, integration questions, and platform bugs."
+              contact="tech-support@docextract.io"
+              channel="Slack: #docextract-tech"
+            />
+            <ContactCard
+              icon={Briefcase}
+              color="bg-emerald-500"
+              title="Business Team"
+              desc="For business requirements, onboarding, SLA queries, and partnership requests."
+              contact="business@docextract.io"
+              channel="Slack: #docextract-business"
+            />
+            <SnowTicketSteps />
+          </div>
         </div>
       </div>
 
