@@ -123,6 +123,64 @@ export default function StepProfile({ data, onChange }) {
         )}
         <p className="text-xs text-slate-400">Press Enter or click + to add each approver email.</p>
       </div>
+
+      {/* FIDs */}
+      <div className="space-y-2">
+        <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+          <IdCard className="w-3.5 h-3.5" /> FIDs
+        </Label>
+        <div className="flex gap-2">
+          <Input
+            placeholder="Enter FID"
+            value={fidInput}
+            onChange={(e) => setFidInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addFid(); } }}
+          />
+          <Button type="button" variant="outline" onClick={addFid} className="flex-shrink-0">
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+        {(data.fids || []).length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {data.fids.map((val) => (
+              <Badge key={val} variant="secondary" className="flex items-center gap-1.5 pr-1">
+                {val}
+                <button onClick={() => removeFid(val)} className="hover:text-rose-600"><X className="w-3 h-3" /></button>
+              </Badge>
+            ))}
+          </div>
+        )}
+        <p className="text-xs text-slate-400">Press Enter or click + to add each FID.</p>
+      </div>
+
+      {/* SIDs */}
+      <div className="space-y-2">
+        <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+          <IdCard className="w-3.5 h-3.5" /> SIDs
+        </Label>
+        <div className="flex gap-2">
+          <Input
+            placeholder="Enter SID"
+            value={sidInput}
+            onChange={(e) => setSidInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addSid(); } }}
+          />
+          <Button type="button" variant="outline" onClick={addSid} className="flex-shrink-0">
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+        {(data.sids || []).length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {data.sids.map((val) => (
+              <Badge key={val} variant="secondary" className="flex items-center gap-1.5 pr-1">
+                {val}
+                <button onClick={() => removeSid(val)} className="hover:text-rose-600"><X className="w-3 h-3" /></button>
+              </Badge>
+            ))}
+          </div>
+        )}
+        <p className="text-xs text-slate-400">Press Enter or click + to add each SID.</p>
+      </div>
     </div>
   );
 }
