@@ -164,13 +164,6 @@ export default function Transactions() {
     );
   }
 
-  const filtered = transactions.filter((t) => {
-    const matchSearch = !search || t.file.toLowerCase().includes(search.toLowerCase()) || t.id.toLowerCase().includes(search.toLowerCase());
-    const matchStatus = statusFilter === "all" || t.status === statusFilter;
-    const matchUseCase = useCaseFilter === "all" || t.useCase === useCaseFilter;
-    return matchSearch && matchStatus && matchUseCase;
-  });
-
   const handleRerunFn = (txn) => {
     setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
   };
