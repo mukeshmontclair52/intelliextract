@@ -229,13 +229,44 @@ export default function Transactions() {
             )}
           </div>
           {/* Search fields */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
               <Input className="pl-8 h-9 text-sm" placeholder="Transaction ID" value={txnId} onChange={(e) => setTxnId(e.target.value)} />
             </div>
-            <Input className="h-9 text-sm" placeholder="Profile ID" value={profileId} onChange={(e) => setProfileId(e.target.value)} />
-            <Input className="h-9 text-sm" placeholder="Doc Config ID" value={docConfigId} onChange={(e) => setDocConfigId(e.target.value)} />
+            <Select value={profileId} onValueChange={setProfileId}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Profile ID" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Profiles</SelectItem>
+                {PROFILE_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>{o.value} — {o.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={docConfigId} onValueChange={setDocConfigId}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Doc Config ID" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Doc Configs</SelectItem>
+                {DOC_CONFIG_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>{o.value} — {o.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={functionalId} onValueChange={setFunctionalId}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Functional ID" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Functions</SelectItem>
+                {FUNCTIONAL_ID_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>{o.value} — {o.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <div className="relative">
               <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
               <Input type="date" className="pl-8 h-9 text-sm" placeholder="From" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
