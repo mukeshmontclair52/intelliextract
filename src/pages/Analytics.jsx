@@ -145,11 +145,16 @@ export default function Analytics() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <StatCard title="Total Transactions" value={totals.total.toLocaleString()} sub="vs prev period" trend="+12.4%" trendUp icon={FileText} color="bg-indigo-500" />
         <StatCard title="Completed" value={totals.completed.toLocaleString()} sub="vs prev period" trend="+8.7%" trendUp icon={CheckCircle2} color="bg-green-500" />
         <StatCard title="Failed" value={totals.failed.toLocaleString()} sub="vs prev period" trend="-3.1%" trendUp icon={XCircle} color="bg-red-400" />
         <StatCard title="Success Rate" value={`${totals.successRate}%`} sub="vs prev period" trend="+0.4%" trendUp icon={TrendingUp} color="bg-violet-500" />
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <StatCard title="Pages Processed" value={(totals.total * 4).toLocaleString()} sub="vs prev period" trend="+14.1%" trendUp icon={BookOpen} color="bg-sky-500" />
+        <StatCard title="Docs Reviewed by Human" value={Math.floor(totals.total * 0.18).toLocaleString()} sub="vs prev period" trend="-5.2%" trendUp={false} icon={UserCheck} color="bg-amber-500" />
+        <StatCard title="Fields Edited by Human" value={Math.floor(totals.total * 0.09 * 3).toLocaleString()} sub="vs prev period" trend="-8.3%" trendUp={false} icon={PenLine} color="bg-rose-500" />
       </div>
 
       {/* Volume Over Time */}
