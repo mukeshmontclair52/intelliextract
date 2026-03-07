@@ -434,12 +434,16 @@ export default function DocumentConfig() {
               <th className="text-left px-5 py-3">File</th>
               <th className="text-left px-5 py-3">Type</th>
               <th className="text-left px-5 py-3">Capabilities</th>
+              <th className="text-left px-5 py-3">Engine</th>
+              <th className="text-left px-5 py-3">LLM Model</th>
               <th className="px-5 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((doc) => {
               const activeConfigs = CONFIG_TABS.filter((t) => doc.configs[t.key]?.enabled);
+              const engine = doc.configs.extraction?.engine || doc.configs.parse?.engine || "—";
+              const model = doc.configs.extraction?.model || doc.configs.split?.model || "—";
               return (
                 <tr key={doc.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => setSelectedDoc(doc)}>
                   <td className="px-5 py-3">
@@ -466,16 +470,32 @@ export default function DocumentConfig() {
                       }) : <span className="text-xs text-slate-400">—</span>}
                     </div>
                   </td>
+                  <td className="px-5 py-3 text-xs text-slate-600">{engine}</td>
+                  <td className="px-5 py-3 text-xs text-slate-600">{model}</td>
                   <td className="px-5 py-3 text-right">
-                    <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); setSelectedDoc(doc); }} className="text-slate-500 hover:text-indigo-600 h-8 px-2">
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
+                    <div className="flex items-center justify-end gap-1">
+                      <Button
+                        variant="ghost" size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const clone = { ...doc, id: Date.now(), name: `${doc.name} (Copy)`, fileName: `copy_${doc.fileName}` };
+                          setDocuments((prev) => [...prev, clone]);
+                        }}
+                        className="text-slate-400 hover:text-indigo-600 h-8 px-2"
+                        title="Clone document"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); setSelectedDoc(doc); }} className="text-slate-500 hover:text-indigo-600 h-8 px-2">
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               );
             })}
             {filtered.length === 0 && (
-              <tr><td colSpan={5} className="text-center py-16 text-slate-400 text-sm">No documents match your search.</td></tr>
+              <tr><td colSpan={7} className="text-center py-16 text-slate-400 text-sm">No documents match your search.</td></tr>
             )}
           </tbody>
         </table>
