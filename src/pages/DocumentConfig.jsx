@@ -478,8 +478,7 @@ export default function DocumentConfig() {
                         variant="ghost" size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          const clone = { ...doc, id: Date.now(), name: `${doc.name} (Copy)`, fileName: `copy_${doc.fileName}` };
-                          setDocuments((prev) => [...prev, clone]);
+                          setEditingDoc({ ...doc, id: null, name: `${doc.name} (Copy)`, fileName: `copy_${doc.fileName}` });
                         }}
                         className="text-slate-400 hover:text-indigo-600 h-8 px-2"
                         title="Clone document"
