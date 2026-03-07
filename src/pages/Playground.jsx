@@ -156,16 +156,22 @@ function SplitPanel() {
           )}
 
           {/* Add new rule */}
-          <div className="flex gap-2 pt-1">
+          <div className="border border-slate-200 rounded-lg p-3 space-y-2 bg-slate-50">
             <input
-              className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-rose-300 placeholder:text-slate-400"
-              placeholder="Add a split rule…"
-              value={newRule}
-              onChange={(e) => setNewRule(e.target.value)}
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-rose-300 placeholder:text-slate-400 bg-white"
+              placeholder="Rule title (required)"
+              value={newRule.title}
+              onChange={(e) => setNewRule((p) => ({ ...p, title: e.target.value }))}
+            />
+            <input
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-rose-300 placeholder:text-slate-400 bg-white"
+              placeholder="Description (optional)"
+              value={newRule.description}
+              onChange={(e) => setNewRule((p) => ({ ...p, description: e.target.value }))}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addRule())}
             />
-            <Button variant="outline" size="sm" onClick={addRule} className="flex-shrink-0 h-9">
-              <Plus className="w-4 h-4" />
+            <Button variant="outline" size="sm" onClick={addRule} className="w-full h-8 text-xs">
+              <Plus className="w-3.5 h-3.5 mr-1" />Add Rule
             </Button>
           </div>
         </div>
