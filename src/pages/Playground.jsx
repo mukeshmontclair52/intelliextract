@@ -71,20 +71,20 @@ function SplitPanel() {
   const [showDocPicker, setShowDocPicker] = useState(false);
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [rules, setRules] = useState([]);
-  const [newRule, setNewRule] = useState("");
+  const [newRule, setNewRule] = useState({ title: "", description: "" });
   const [running, setRunning] = useState(false);
 
   const handleSelectConfig = (cfg) => {
     setSelectedConfig(cfg);
-    setRules(cfg.rules.map((r, i) => ({ id: i, text: r })));
+    setRules(cfg.rules.map((r, i) => ({ id: i, title: r, description: "" })));
     setShowDocPicker(false);
   };
 
   const addRule = () => {
-    const val = newRule.trim();
-    if (!val) return;
-    setRules((prev) => [...prev, { id: Date.now(), text: val }]);
-    setNewRule("");
+    const title = newRule.title.trim();
+    if (!title) return;
+    setRules((prev) => [...prev, { id: Date.now(), title, description: newRule.description.trim() }]);
+    setNewRule({ title: "", description: "" });
   };
 
   const removeRule = (id) => setRules((prev) => prev.filter((r) => r.id !== id));
