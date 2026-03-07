@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { CalendarDays, TrendingUp, TrendingDown, FileText, CheckCircle2, XCircle, Clock, Filter, ChevronDown } from "lucide-react";
+import { CalendarDays, TrendingUp, TrendingDown, FileText, CheckCircle2, XCircle, Clock, Filter, ChevronDown, BookOpen, UserCheck, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
