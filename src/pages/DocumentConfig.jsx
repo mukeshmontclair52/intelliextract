@@ -304,28 +304,7 @@ function DocumentDetail({ doc, onBack, onEdit }) {
         </Button>
       </div>
 
-      {visibleTabs.length > 1 && (
-        <div className="flex gap-1 mb-5 bg-slate-100 p-1 rounded-lg w-fit">
-          {visibleTabs.map((tab) => {
-            const Icon = tab.icon;
-            const enabled = doc.configs[tab.key]?.enabled;
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-                  activeTab === tab.key ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"
-                )}
-              >
-                <Icon className={cn("w-3.5 h-3.5", activeTab === tab.key && enabled ? tab.color : "")} />
-                {tab.label}
-                {enabled && <span className="w-1.5 h-1.5 rounded-full bg-green-400 ml-0.5" />}
-              </button>
-            );
-          })}
-        </div>
-      )}
+
 
       <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
         <AnimatePresence mode="wait">
