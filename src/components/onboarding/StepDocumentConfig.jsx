@@ -106,10 +106,11 @@ export default function StepDocumentConfig({ data, onChange }) {
               <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Document</th>
               <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Type</th>
               <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Capabilities</th>
+              <th className="w-10 px-3 py-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {DOCUMENT_CONFIGS.map((doc) => {
+            {docs.map((doc) => {
               const isSelected = selected.includes(doc.id);
               const caps = getCapabilities(doc.configs);
               return (
