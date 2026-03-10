@@ -11,56 +11,7 @@ import { createPageUrl } from "@/utils";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
-// Mock profiles — same data as Onboarding page
-const MOCK_PROFILES = [
-  {
-    id: 1,
-    appId: "app-001",
-    appName: "Alts Extraction App",
-    contactEmail: "ops@alts.com",
-    approvers: ["john.doe@firm.com", "jane.smith@firm.com"],
-    fids: ["FID-001", "FID-002"],
-    sids: ["SID-A"],
-    useCases: [{ type: "extraction", name: "Schedule K-1 Extraction" }, { type: "classification", name: "Doc Classifier" }],
-    documentType: "alts-schedule",
-    isActive: true,
-  },
-  {
-    id: 2,
-    appId: "app-002",
-    appName: "Fund Reports Pipeline",
-    contactEmail: "reports@fundco.com",
-    approvers: ["manager@fundco.com"],
-    fids: ["FID-003"],
-    sids: [],
-    useCases: [{ type: "extraction", name: "Quarterly Report Extraction" }],
-    documentType: "quarterly-report",
-    isActive: true,
-  },
-];
 
-const MOCK_DOC_CONFIGS = [
-  { id: "dc-1", name: "K-1 Schedule Parser", type: "Extraction", enabled: true, lastUsed: "2 hours ago" },
-  { id: "dc-2", name: "Fund Report Splitter", type: "Split", enabled: true, lastUsed: "Yesterday" },
-  { id: "dc-3", name: "Quarterly Extractor", type: "Extraction", enabled: false, lastUsed: "5 days ago" },
-];
-
-const volumeData = [
-  { day: "Mon", completed: 42, failed: 3 },
-  { day: "Tue", completed: 58, failed: 5 },
-  { day: "Wed", completed: 73, failed: 2 },
-  { day: "Thu", completed: 61, failed: 8 },
-  { day: "Fri", completed: 89, failed: 4 },
-  { day: "Sat", completed: 34, failed: 1 },
-  { day: "Sun", completed: 27, failed: 2 },
-];
-
-const recentTransactions = [
-  { id: "TXN-1041", file: "Blackstone_Q1_2026.pdf", profile: "Alts Extraction App", status: "completed", time: "2 min ago" },
-  { id: "TXN-1040", file: "Apollo_Fund_Report.pdf", profile: "Fund Reports Pipeline", status: "failed", time: "8 min ago" },
-  { id: "TXN-1039", file: "KKR_Quarterly_Dec.pdf", profile: "Alts Extraction App", status: "completed", time: "15 min ago" },
-  { id: "TXN-1038", file: "Carlyle_Alts_Q4.pdf", profile: "Fund Reports Pipeline", status: "processing", time: "21 min ago" },
-];
 
 const statusStyle = {
   completed: "bg-green-50 text-green-700 border-green-200",
