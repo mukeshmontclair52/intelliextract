@@ -248,7 +248,7 @@ export default function Transactions() {
             )}
           </div>
           {/* Search fields */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
               <Input className="pl-8 h-9 text-sm" placeholder="Transaction ID" value={txnId} onChange={(e) => setTxnId(e.target.value)} />
@@ -286,14 +286,41 @@ export default function Transactions() {
                 ))}
               </SelectContent>
             </Select>
-            <div className="relative">
-              <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-              <Input type="date" className="pl-8 h-9 text-sm" placeholder="From" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-            </div>
-            <div className="relative">
-              <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-              <Input type="date" className="pl-8 h-9 text-sm" placeholder="To" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-            </div>
+          </div>
+          {/* Date presets */}
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <CalendarDays className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+            {[
+              { value: "all", label: "All Time" },
+              { value: "today", label: "Today" },
+              { value: "7days", label: "Last 7 Days" },
+              { value: "30days", label: "Last 30 Days" },
+              { value: "custom", label: "Custom Range" },
+            ].map((p) => (
+              <button
+                key={p.value}
+                onClick={() => applyPreset(p.value)}
+                className={cn(
+                  "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
+                  datePreset === p.value
+                    ? "bg-indigo-600 text-white border-indigo-600"
+                    : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600"
+                )}
+              >
+                {p.label}
+              </button>
+            ))}
+            {datePreset === "custom" && (
+              <div className="flex items-center gap-2 ml-1">
+                <div className="relative">
+                  <Input type="date" className="h-8 text-xs w-36" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+                </div>
+                <span className="text-slate-400 text-xs">to</span>
+                <div className="relative">
+                  <Input type="date" className="h-8 text-xs w-36" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex gap-2">
             <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 h-9 px-5" onClick={handleSearch}>
