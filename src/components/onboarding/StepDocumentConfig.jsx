@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { FileText, Zap, Scissors, Scan, EyeOff, Plus, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
