@@ -253,7 +253,7 @@ export default function Onboarding() {
           ) : (
             <Button onClick={handleFinish} className="bg-green-600 hover:bg-green-700">
               <Check className="w-4 h-4 mr-1" />
-              Finish Setup
+              {editingProfileId ? "Save Changes" : "Finish Setup"}
             </Button>
           )}
         </div>
