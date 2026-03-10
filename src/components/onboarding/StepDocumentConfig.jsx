@@ -43,8 +43,6 @@ const DOCUMENT_CONFIGS = [
   },
 ];
 
-const CAPS = ["extraction", "split", "parse", "redaction"];
-
 export default function StepDocumentConfig({ data, onChange }) {
   const selected = data.selectedDocConfigs || [];
 
@@ -64,16 +62,27 @@ export default function StepDocumentConfig({ data, onChange }) {
     }
   };
 
+  const getCapabilities = (configs) =>
+    Object.entries(configs)
+      .filter(([, v]) => v)
+      .map(([k]) => CAPABILITY_ICONS[k]);
+
   const allSelected = selected.length === DOCUMENT_CONFIGS.length;
   const someSelected = selected.length > 0 && !allSelected;
 
   return (
     <div className="space-y-5">
-      <div>
-        <h2 className="text-lg font-bold text-slate-800">Document Configurations</h2>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Select the document configs this profile will use. You can pick one or more.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-slate-800">Document Configurations</h2>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Select the document configs this profile will use. You can pick one or more.
+          </p>
+        </div>
+        <Button size="sm" variant="outline" className="flex-shrink-0 text-indigo-600 border-indigo-200 hover:bg-indigo-50">
+          <Plus className="w-3.5 h-3.5 mr-1" />
+          Add Config
+        </Button>
       </div>
 
       <div className="rounded-xl border border-slate-200 overflow-hidden bg-white shadow-sm">
@@ -89,21 +98,13 @@ export default function StepDocumentConfig({ data, onChange }) {
               </th>
               <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Document</th>
               <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Type</th>
-              {CAPS.map((cap) => {
-                const { icon: Icon, color, label } = CAPABILITY_ICONS[cap];
-                return (
-                  <th key={cap} className="text-center px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">
-                    <span className={cn("inline-flex items-center gap-1", color)}>
-                      <Icon className="w-3.5 h-3.5" />{label}
-                    </span>
-                  </th>
-                );
-              })}
+              <th className="text-left px-3 py-3 font-medium text-slate-500 text-xs uppercase tracking-wide">Capabilities</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {DOCUMENT_CONFIGS.map((doc) => {
               const isSelected = selected.includes(doc.id);
+              const caps = getCapabilities(doc.configs);
               return (
                 <tr
                   key={doc.id}
@@ -130,20 +131,17 @@ export default function StepDocumentConfig({ data, onChange }) {
                   <td className="px-3 py-3">
                     <Badge variant="secondary" className="text-xs">{doc.typeLabel}</Badge>
                   </td>
-                  {CAPS.map((cap) => {
-                    const { icon: Icon, color, bg } = CAPABILITY_ICONS[cap];
-                    return (
-                      <td key={cap} className="px-3 py-3 text-center">
-                        {doc.configs[cap] ? (
-                          <span className={cn("inline-flex items-center justify-center w-6 h-6 rounded-full", bg)}>
-                            <Icon className={cn("w-3.5 h-3.5", color)} />
-                          </span>
-                        ) : (
-                          <span className="text-slate-200">—</span>
-                        )}
-                      </td>
-                    );
-                  })}
+                  <td className="px-3 py-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {caps.length === 0 ? (
+                        <span className="text-slate-300 text-xs">—</span>
+                      ) : caps.map(({ icon: Icon, color, bg, label }) => (
+                        <span key={label} className={cn("inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium", bg, color)}>
+                          <Icon className="w-3 h-3" />{label}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
                 </tr>
               );
             })}
