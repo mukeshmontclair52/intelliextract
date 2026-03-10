@@ -22,9 +22,17 @@ const statusStyle = {
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const [profiles, setProfiles] = useState([]);
+  const [docConfigs, setDocConfigs] = useState([]);
+  const [volumeData, setVolumeData] = useState([]);
+  const [recentTransactions, setRecentTransactions] = useState([]);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
+    profilesService.getAll().then(setProfiles);
+    documentConfigsService.getAll().then(setDocConfigs);
+    analyticsService.getDashboardVolume().then(setVolumeData);
+    analyticsService.getRecentTransactions().then(setRecentTransactions);
   }, []);
 
   const totalProcessed = volumeData.reduce((s, d) => s + d.completed + d.failed, 0);
@@ -32,10 +40,10 @@ export default function Dashboard() {
   const totalFailed = volumeData.reduce((s, d) => s + d.failed, 0);
 
   const stats = [
-    { label: "Active Profiles", value: MOCK_PROFILES.filter(p => p.isActive).length, icon: AppWindow, color: "text-indigo-600", bg: "bg-indigo-50", sub: `${MOCK_PROFILES.length} total` },
-    { label: "Document Configs", value: MOCK_DOC_CONFIGS.length, icon: FolderOpen, color: "text-purple-600", bg: "bg-purple-50", sub: `${MOCK_DOC_CONFIGS.filter(d => d.enabled).length} enabled` },
+    { label: "Active Profiles", value: profiles.filter(p => p.isActive).length, icon: AppWindow, color: "text-indigo-600", bg: "bg-indigo-50", sub: `${profiles.length} total` },
+    { label: "Document Configs", value: docConfigs.length, icon: FolderOpen, color: "text-purple-600", bg: "bg-purple-50", sub: `${docConfigs.filter(d => d.configs?.extraction?.enabled).length} with extraction` },
     { label: "Processed (7d)", value: totalProcessed, icon: FileText, color: "text-slate-600", bg: "bg-slate-100", sub: `${totalCompleted} completed` },
-    { label: "Failed (7d)", value: totalFailed, icon: XCircle, color: "text-red-500", bg: "bg-red-50", sub: `${((totalFailed / totalProcessed) * 100).toFixed(1)}% failure rate` },
+    { label: "Failed (7d)", value: totalFailed, icon: XCircle, color: "text-red-500", bg: "bg-red-50", sub: totalProcessed ? `${((totalFailed / totalProcessed) * 100).toFixed(1)}% failure rate` : "—" },
   ];
 
   return (
