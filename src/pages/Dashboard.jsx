@@ -164,7 +164,7 @@ export default function Dashboard() {
             </div>
           </CardHeader>
           <CardContent className="space-y-2 pt-0">
-            {MOCK_DOC_CONFIGS.map((dc) => (
+            {docConfigs.slice(0, 3).map((dc) => (
               <div key={dc.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-100 hover:bg-slate-50 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className={`w-7 h-7 rounded-md flex items-center justify-center ${dc.enabled ? "bg-purple-50" : "bg-slate-100"}`}>
