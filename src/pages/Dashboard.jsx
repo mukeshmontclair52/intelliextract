@@ -94,7 +94,7 @@ export default function Dashboard() {
             </div>
           </CardHeader>
           <CardContent className="space-y-3 pt-0">
-            {MOCK_PROFILES.map((p) => (
+            {profiles.map((p) => (
               <Link key={p.id} to={createPageUrl("Onboarding")} className="block">
                 <div className="flex items-start justify-between p-3 rounded-lg border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all cursor-pointer">
                   <div className="flex items-start gap-3">
