@@ -198,13 +198,17 @@ export default function Transactions() {
   };
 
   const handleRerunFn = (txn) => {
-    setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
-    setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "processing" } : t));
+    const updated = { ...txn, status: "processing" };
+    transactionsService.update(txn.id, { status: "processing" });
+    setTransactions((prev) => prev.map((t) => t.id === txn.id ? updated : t));
+    setFiltered((prev) => prev.map((t) => t.id === txn.id ? updated : t));
   };
 
   const handleRejectFn = (txn) => {
-    setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
-    setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." } : t));
+    const patch = { status: "rejected", rejectedBy: "you@firm.com", rejectedAt: new Date().toLocaleString(), rejectionReason: "Manually rejected." };
+    transactionsService.update(txn.id, patch);
+    setTransactions((prev) => prev.map((t) => t.id === txn.id ? { ...t, ...patch } : t));
+    setFiltered((prev) => prev.map((t) => t.id === txn.id ? { ...t, ...patch } : t));
   };
 
   const handleRerun = (txn) => {
