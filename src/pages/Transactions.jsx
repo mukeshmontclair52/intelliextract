@@ -144,8 +144,27 @@ export default function Transactions() {
   const [profileId, setProfileId] = useState("all");
   const [docConfigId, setDocConfigId] = useState("all");
   const [functionalId, setFunctionalId] = useState("all");
+  const [datePreset, setDatePreset] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  const applyPreset = (preset) => {
+    setDatePreset(preset);
+    const today = new Date();
+    const fmt = (d) => d.toISOString().split("T")[0];
+    if (preset === "today") {
+      setDateFrom(fmt(today)); setDateTo(fmt(today));
+    } else if (preset === "7days") {
+      const d = new Date(today); d.setDate(d.getDate() - 6);
+      setDateFrom(fmt(d)); setDateTo(fmt(today));
+    } else if (preset === "30days") {
+      const d = new Date(today); d.setDate(d.getDate() - 29);
+      setDateFrom(fmt(d)); setDateTo(fmt(today));
+    } else if (preset === "all") {
+      setDateFrom(""); setDateTo("");
+    }
+    // for "custom" keep existing values
+  };
 
   // Results
   const [hasSearched, setHasSearched] = useState(false);
