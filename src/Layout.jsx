@@ -10,6 +10,7 @@ const navItems = [
   { label: "Document Config", page: "DocumentConfig", icon: FolderOpen },
   { label: "Analytics", page: "Analytics", icon: BarChart2 },
   { label: "Playground", page: "Playground", icon: FlaskConical },
+  { label: "Playground V2", page: "PlaygroundV2", icon: Beaker },
   { label: "Client Profile", page: "Onboarding", icon: UserPlus },
   { label: "Support", page: "Support", icon: LifeBuoy },
 ];
