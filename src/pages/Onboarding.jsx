@@ -123,7 +123,12 @@ function ProfileList({ profiles, onAdd, onDelete, onSelect }) {
 
 export default function Onboarding() {
   const [view, setView] = useState("list"); // "list" | "wizard"
-  const [profiles, setProfiles] = useState(MOCK_PROFILES);
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    profilesService.getAll().then((data) => { setProfiles(data); setLoading(false); });
+  }, []);
   const [editingProfileId, setEditingProfileId] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [profile, setProfile] = useState({});
