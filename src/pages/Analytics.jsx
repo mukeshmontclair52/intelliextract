@@ -156,7 +156,7 @@ export default function Analytics() {
               </PieChart>
             </ResponsiveContainer>
             <div className="flex flex-col gap-2 flex-1">
-              {ENGINE_DATA.map((e) => (
+              {engineData.map((e) => (
                 <div key={e.name} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: e.color }} />
