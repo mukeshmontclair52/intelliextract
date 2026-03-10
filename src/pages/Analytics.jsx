@@ -173,7 +173,7 @@ export default function Analytics() {
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
           <SectionTitle>Response Latency (seconds)</SectionTitle>
           <ResponsiveContainer width="100%" height={160}>
-            <BarChart data={LATENCY_DATA} barSize={32}>
+            <BarChart data={latencyData} barSize={32}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis dataKey="label" tick={{ fontSize: 12, fill: "#94a3b8" }} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} tickLine={false} axisLine={false} unit="s" />
