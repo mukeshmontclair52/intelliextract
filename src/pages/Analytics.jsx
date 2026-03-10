@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { analyticsService } from "@/components/services/dataService";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { CalendarDays, TrendingUp, TrendingDown, FileText, CheckCircle2, XCircle, Clock, Filter, ChevronDown, BookOpen, UserCheck, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
