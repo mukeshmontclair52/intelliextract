@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Check, ChevronRight, ChevronLeft, Plus, AppWindow, Mail, Zap, Tag, Trash2, ArrowLeft, ChevronRight as GoIcon } from "lucide-react";
-import ProfileDetail from "@/components/onboarding/ProfileDetail";
 import { motion, AnimatePresence } from "framer-motion";
 import StepProfile from "@/components/onboarding/StepProfile";
 import StepDocumentConfig from "@/components/onboarding/StepDocumentConfig";
