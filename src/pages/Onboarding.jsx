@@ -159,27 +159,26 @@ export default function Onboarding() {
     setView("wizard");
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    const data = { ...profile, selectedDocConfigs: docConfigData.selectedDocConfigs || [] };
     if (editingProfileId) {
-      setProfiles((prev) => prev.map((p) =>
-        p.id === editingProfileId
-          ? { ...p, ...profile, selectedDocConfigs: docConfigData.selectedDocConfigs || [] }
-          : p
-      ));
+      await profilesService.update(editingProfileId, data);
+      setProfiles((prev) => prev.map((p) => p.id === editingProfileId ? { ...p, ...data } : p));
     } else {
-      setProfiles((prev) => [...prev, {
-        id: Date.now(),
+      const created = await profilesService.create({
         appId: profile.appId || "app-new",
         appName: profile.appName || "New App",
         contactEmail: profile.contactEmail || "",
         approvers: profile.approvers || [],
-        selectedDocConfigs: docConfigData.selectedDocConfigs || [],
-      }]);
+        ...data,
+      });
+      setProfiles((prev) => [...prev, created]);
     }
     setView("list");
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
+    await profilesService.remove(id);
     setProfiles((prev) => prev.filter((p) => p.id !== id));
   };
 
