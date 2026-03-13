@@ -310,12 +310,12 @@ function SplitDetail({ config }) {
                   placeholder="Rule title..."
                   className="w-full bg-white rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all"
                 />
-                <input
-                  type="text"
+                <textarea
                   value={rule.description}
                   onChange={(e) => updateRule(rule.id, "description", e.target.value)}
                   placeholder="Description (optional)"
-                  className="w-full bg-white rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all"
+                  rows={2}
+                  className="w-full bg-white rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all resize-none"
                 />
               </div>
             ))}
