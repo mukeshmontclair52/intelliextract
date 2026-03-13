@@ -34,12 +34,13 @@ function EmailTagInput({ values, onChange, placeholder }) {
       <input
         type="email"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => { setInput(e.target.value); setError(""); }}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === ",") { e.preventDefault(); add(); } }}
         onBlur={add}
         placeholder={values.length === 0 ? placeholder : ""}
         className="flex-1 min-w-[180px] text-sm outline-none bg-transparent placeholder:text-slate-400"
       />
+      {error && <span className="w-full text-xs text-rose-500 mt-0.5">{error}</span>}
     </div>
   );
 }
