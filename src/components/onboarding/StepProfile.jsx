@@ -7,8 +7,6 @@ import { AppWindow, Mail, UserCheck, X, Plus, IdCard } from "lucide-react";
 
 export default function StepProfile({ data, onChange }) {
   const [approverInput, setApproverInput] = React.useState("");
-  const [fidInput, setFidInput] = React.useState("");
-  const [sidInput, setSidInput] = React.useState("");
 
   const addApprover = () => {
     const email = approverInput.trim();
