@@ -40,17 +40,18 @@ export default function StepProfile({ data, onChange }) {
         <p className="text-sm text-slate-500 mt-1">Set up your application identity and contacts.</p>
       </div>
 
+      <div className="space-y-1.5">
+        <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+          <AppWindow className="w-3.5 h-3.5" /> App Name
+        </Label>
+        <Input
+          placeholder="e.g. Alts Extraction App"
+          value={data.appName || ""}
+          onChange={(e) => onChange({ ...data, appName: e.target.value })}
+        />
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
-            <AppWindow className="w-3.5 h-3.5" /> App Name
-          </Label>
-          <Input
-            placeholder="e.g. Alts Extraction App"
-            value={data.appName || ""}
-            onChange={(e) => onChange({ ...data, appName: e.target.value })}
-          />
-        </div>
         <div className="space-y-1.5">
           <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
             <IdCard className="w-3.5 h-3.5" /> Type of ID
@@ -65,14 +66,24 @@ export default function StepProfile({ data, onChange }) {
             <option value="SID">SID</option>
           </select>
         </div>
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+            <IdCard className="w-3.5 h-3.5" /> ID Value
+          </Label>
+          <Input
+            placeholder={`Enter ${data.sealIdType || "FID/SID"} value`}
+            value={data.idValue || ""}
+            onChange={(e) => onChange({ ...data, idValue: e.target.value })}
+          />
+        </div>
       </div>
 
       <div className="space-y-1.5">
         <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
-          <IdCard className="w-3.5 h-3.5" /> Seal ID Value
+          <IdCard className="w-3.5 h-3.5" /> Seal ID
         </Label>
         <Input
-          placeholder={`Enter ${data.sealIdType || "FID/SID"} value`}
+          placeholder="Enter Seal ID"
           value={data.sealId || ""}
           onChange={(e) => onChange({ ...data, sealId: e.target.value })}
         />
