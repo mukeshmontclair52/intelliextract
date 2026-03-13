@@ -49,14 +49,36 @@ export default function StepProfile({ data, onChange }) {
         </div>
         <div className="space-y-1.5">
           <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
-            <AppWindow className="w-3.5 h-3.5" /> App Name
+            <IdCard className="w-3.5 h-3.5" /> Type of ID
           </Label>
-          <Input
-            placeholder="e.g. Alts Extraction App"
-            value={data.appName || ""}
-            onChange={(e) => onChange({ ...data, appName: e.target.value })}
-          />
+          <div className="flex gap-2">
+            {["FID", "SID"].map((type) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => onChange({ ...data, sealIdType: type })}
+                className={`flex-1 py-2 rounded-lg border-2 text-sm font-semibold transition-all ${
+                  data.sealIdType === type
+                    ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                    : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+          <IdCard className="w-3.5 h-3.5" /> Seal ID
+        </Label>
+        <Input
+          placeholder={`Enter ${data.sealIdType || "FID/SID"} value`}
+          value={data.sealId || ""}
+          onChange={(e) => onChange({ ...data, sealId: e.target.value })}
+        />
       </div>
 
       <div className="space-y-1.5">
