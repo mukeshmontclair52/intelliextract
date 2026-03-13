@@ -393,6 +393,25 @@ function DocumentDetail({ doc, onBack, onEdit }) {
 
 
 
+      {activeConfigs.length > 1 && (
+        <div className="flex gap-1 mb-4">
+          {activeConfigs.map((t) => {
+            const Icon = t.icon;
+            return (
+              <button
+                key={t.key}
+                onClick={() => setActiveTab(t.key)}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  activeTab === t.key ? cn(t.color, t.bg) : "text-slate-500 hover:bg-slate-100"
+                )}
+              >
+                <Icon className="w-3.5 h-3.5" />{t.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
       <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
         <AnimatePresence mode="wait">
           <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.15 }}>
