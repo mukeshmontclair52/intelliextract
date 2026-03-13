@@ -123,13 +123,10 @@ function ExtractionDetail({ config }) {
   const [extractConfig, setExtractConfig] = useState(initialConfig);
   const [description, setDescription] = useState(initialDescription);
   const [viewMode, setViewMode] = useState("fields");
-  const [testDocument, setTestDocument] = useState(null);
+  const [activeTab, setActiveTab] = useState("configuration");
   const [isGeneratingSchema, setIsGeneratingSchema] = useState(false);
-  const [isTestingSchema, setIsTestingSchema] = useState(false);
 
   if (!config.enabled) return <DisabledState label="Extraction" />;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- safe: hooks are all declared above, return is just early render
 
   const totalFields = fields.reduce((acc, f) => acc + 1 + (f.children?.length || 0), 0);
   const addField = () => setFields([...fields, { id: Date.now().toString(), name: "", description: "", type: "text", children: [] }]);
@@ -144,13 +141,38 @@ function ExtractionDetail({ config }) {
   const updateField = (index, updated) => { const n = [...fields]; n[index] = updated; setFields(n); };
   const deleteField = (index) => setFields(fields.filter((_, i) => i !== index));
   const handleGenerateSchema = () => { setIsGeneratingSchema(true); setTimeout(() => setIsGeneratingSchema(false), 2000); };
-  const handleTestSchema = () => { setIsTestingSchema(true); setTimeout(() => setIsTestingSchema(false), 2000); };
 
   return (
-    <div className="space-y-3">
-      <ConfigBar config={extractConfig} onConfigChange={setExtractConfig} />
-      <TaskDescription description={description} onDescriptionChange={setDescription} />
-      <div className="space-y-3">
+    <div className="space-y-4">
+      <div className="flex gap-2 border-b border-slate-100 pb-0">
+        {[
+          { key: "configuration", label: "Configuration & Schema Prompt" },
+          { key: "fields", label: "Field Configuration" },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors",
+              activeTab === tab.key
+                ? "border-indigo-600 text-indigo-700"
+                : "border-transparent text-slate-500 hover:text-slate-700"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "configuration" && (
+        <div className="space-y-3 pt-1">
+          <ConfigBar config={extractConfig} onConfigChange={setExtractConfig} />
+          <TaskDescription description={description} onDescriptionChange={setDescription} />
+        </div>
+      )}
+
+      {activeTab === "fields" && (
+        <div className="space-y-3 pt-1">
           <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
             <div className="p-3 border-b border-slate-100">
               <div className="flex items-center justify-between">
@@ -189,24 +211,13 @@ function ExtractionDetail({ config }) {
               </AnimatePresence>
             </div>
           </div>
-          {fields.length > 0 && (
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
-              <div className="p-3 flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-700">Test Extraction</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Test your schema with the uploaded document</p>
-                </div>
-                <Button onClick={handleTestSchema} disabled={isTestingSchema || !testDocument} className="bg-green-600 hover:bg-green-700 h-8 px-3 text-sm">
-                  <Play className="w-3.5 h-3.5 mr-1.5" />{isTestingSchema ? "Testing..." : "Test & View Result"}
-                </Button>
-              </div>
-            </div>
-          )}
-          </div>
-          <div className="flex justify-end gap-3 pt-2">
-          <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
-          <Button className="bg-indigo-600 hover:bg-indigo-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
-          </div>
+        </div>
+      )}
+
+      <div className="flex justify-end gap-3 pt-2">
+        <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
+        <Button className="bg-indigo-600 hover:bg-indigo-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
+      </div>
     </div>
   );
 }
