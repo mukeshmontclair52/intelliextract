@@ -62,6 +62,26 @@ export default function StepReview({ profile, useCasesData, docPrefs }) {
         </div>
       </div>
 
+      {/* Roles */}
+      {(profile.roles || []).length > 0 && (
+        <div>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Roles</p>
+          <div className="bg-white rounded-lg border border-slate-200 px-4">
+            <div className="flex items-start gap-3 py-2.5">
+              <div className="w-7 h-7 rounded-md bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" />
+              </div>
+              <span className="text-xs text-slate-500 w-36 flex-shrink-0 mt-0.5">Assigned Roles</span>
+              <div className="flex flex-wrap gap-1.5">
+                {profile.roles.map((r) => (
+                  <Badge key={r} variant="secondary" className="text-xs capitalize">{r.replace("_", " ")}</Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Use Cases */}
       <div>
         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Use Cases ({useCases.length})</p>
