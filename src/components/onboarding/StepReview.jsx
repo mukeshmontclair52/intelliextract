@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Hash, AppWindow, Mail, UserCheck, FileText, Zap, Tag } from "lucide-react";
+import { Hash, AppWindow, Mail, UserCheck, FileText, Zap, Tag, ShieldCheck } from "lucide-react";
 
 function ReviewRow({ icon: Icon, label, value }) {
   if (!value) return null;
