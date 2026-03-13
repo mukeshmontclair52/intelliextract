@@ -358,7 +358,7 @@ function RedactionDetail({ config }) {
 
 function DocumentDetail({ doc, onBack, onEdit }) {
   const activeConfigs = CONFIG_TABS.filter((t) => doc.configs[t.key]?.enabled);
-  const activeTab = activeConfigs[0]?.key || "extraction";
+  const [activeTab, setActiveTab] = useState(activeConfigs[0]?.key || "extraction");
 
   return (
     <div className="p-8">
