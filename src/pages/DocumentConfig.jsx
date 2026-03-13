@@ -230,21 +230,107 @@ function ParseDetail({ config }) {
   );
 }
 
+const SPLIT_ENGINES = ["Gen AI - LLM", "Rule Based", "Template Based"];
+const SPLIT_MODELS = ["GPT-4o", "GPT-4 Turbo", "Claude 3.5 Sonnet", "Gemini 1.5 Pro"];
+const SPLIT_MODES = ["Accurate", "Fast", "Balanced"];
+
 function SplitDetail({ config }) {
+  const [splitConfig, setSplitConfig] = useState({
+    engine: config.engine || "Gen AI - LLM",
+    model: config.model || "GPT-4o",
+    mode: config.mode || "Accurate",
+  });
+  const [rules, setRules] = useState(
+    (config.categories || []).map((c, i) => ({ id: String(i), title: c, description: "" }))
+  );
+  const [activeTab, setActiveTab] = useState("rules");
+
   if (!config.enabled) return <DisabledState label="Split" />;
+
+  const addRule = () => setRules([...rules, { id: Date.now().toString(), title: "", description: "" }]);
+  const removeRule = (id) => setRules(rules.filter((r) => r.id !== id));
+  const updateRule = (id, field, value) => setRules(rules.map((r) => r.id === id ? { ...r, [field]: value } : r));
+
   return (
     <div className="space-y-4">
-      <div className="bg-slate-50 rounded-lg p-3 inline-block">
-        <p className="text-xs text-slate-400 mb-0.5">Model</p>
-        <p className="text-sm font-semibold text-slate-700">{config.model}</p>
+      <div className="flex gap-2 border-b border-slate-100 pb-0">
+        {["configuration", "rules"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium capitalize border-b-2 -mb-px transition-colors",
+              activeTab === tab
+                ? "border-purple-600 text-purple-700"
+                : "border-transparent text-slate-500 hover:text-slate-700"
+            )}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
-      <div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Split Categories ({(config.categories || []).length})</p>
-        <div className="flex flex-wrap gap-2">
-          {(config.categories || []).map((c) => (
-            <span key={c} className="text-xs bg-purple-50 text-purple-700 border border-purple-100 px-2.5 py-1 rounded-full font-medium">{c}</span>
+
+      {activeTab === "configuration" && (
+        <div className="grid grid-cols-3 gap-4 pt-2">
+          {[
+            { label: "Engine", key: "engine", options: SPLIT_ENGINES },
+            { label: "Model", key: "model", options: SPLIT_MODELS },
+            { label: "Mode", key: "mode", options: SPLIT_MODES },
+          ].map(({ label, key, options }) => (
+            <div key={key} className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-500">{label}</label>
+              <select
+                value={splitConfig[key]}
+                onChange={(e) => setSplitConfig({ ...splitConfig, [key]: e.target.value })}
+                className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+              >
+                {options.map((o) => <option key={o}>{o}</option>)}
+              </select>
+            </div>
           ))}
         </div>
+      )}
+
+      {activeTab === "rules" && (
+        <div className="space-y-3 pt-2">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Rules</p>
+          <div className="border border-slate-200 rounded-lg overflow-hidden">
+            {rules.map((rule, idx) => (
+              <div key={rule.id} className={cn("p-3 space-y-2", idx < rules.length - 1 && "border-b border-slate-100")}>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={rule.title}
+                    onChange={(e) => updateRule(rule.id, "title", e.target.value)}
+                    placeholder="Rule title..."
+                    className="flex-1 h-8 rounded-md border border-input bg-white px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  />
+                  <button onClick={() => removeRule(rule.id)} className="text-slate-300 hover:text-rose-500 transition-colors flex-shrink-0">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={rule.description}
+                  onChange={(e) => updateRule(rule.id, "description", e.target.value)}
+                  placeholder="Description (optional)"
+                  className="w-full h-8 rounded-md border border-input bg-white px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+              </div>
+            ))}
+            <button
+              onClick={addRule}
+              className="w-full py-2.5 text-sm text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-colors flex items-center justify-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" />Add Rule
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-end gap-3 pt-2">
+        <Button variant="outline" className="text-slate-600"><X className="w-4 h-4 mr-2" />Cancel</Button>
+        <Button className="bg-purple-600 hover:bg-purple-700"><Save className="w-4 h-4 mr-2" />Save Configuration</Button>
       </div>
     </div>
   );
