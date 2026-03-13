@@ -3,30 +3,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AppWindow, Mail, UserCheck, X, Plus, IdCard } from "lucide-react";
+import { AppWindow, Mail, X, Plus, IdCard } from "lucide-react";
 
 export default function StepProfile({ data, onChange }) {
-  const [approverInput, setApproverInput] = React.useState("");
+  const [contactEmailInput, setContactEmailInput] = React.useState("");
+  const [ccIntakeInput, setCcIntakeInput] = React.useState("");
 
-  const addApprover = () => {
-    const email = approverInput.trim();
+  const addContactEmail = () => {
+    const email = contactEmailInput.trim();
     if (!email) return;
-    const current = data.approvers || [];
-    if (!current.includes(email)) {
-      onChange({ ...data, approvers: [...current, email] });
-    }
-    setApproverInput("");
+    const current = data.contactEmails || [];
+    if (!current.includes(email)) onChange({ ...data, contactEmails: [...current, email] });
+    setContactEmailInput("");
   };
 
-  const removeApprover = (email) => {
-    onChange({ ...data, approvers: (data.approvers || []).filter((e) => e !== email) });
+  const removeContactEmail = (email) => {
+    onChange({ ...data, contactEmails: (data.contactEmails || []).filter((e) => e !== email) });
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addApprover();
-    }
+  const addCcIntake = () => {
+    const email = ccIntakeInput.trim();
+    if (!email) return;
+    const current = data.ccIntake || [];
+    if (!current.includes(email)) onChange({ ...data, ccIntake: [...current, email] });
+    setCcIntakeInput("");
+  };
+
+  const removeCcIntake = (email) => {
+    onChange({ ...data, ccIntake: (data.ccIntake || []).filter((e) => e !== email) });
   };
 
   return (
