@@ -293,34 +293,35 @@ function SplitDetail({ config }) {
 
       {activeTab === "rules" && (
         <div className="space-y-3 pt-2">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Rules</p>
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
-            {rules.map((rule, idx) => (
-              <div key={rule.id} className={cn("p-3 space-y-2", idx < rules.length - 1 && "border-b border-slate-100")}>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={rule.title}
-                    onChange={(e) => updateRule(rule.id, "title", e.target.value)}
-                    placeholder="Rule title..."
-                    className="flex-1 h-8 rounded-md border border-input bg-white px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
-                  />
-                  <button onClick={() => removeRule(rule.id)} className="text-slate-300 hover:text-rose-500 transition-colors flex-shrink-0">
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Rules</p>
+          <div className="space-y-2">
+            {rules.map((rule) => (
+              <div key={rule.id} className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-2.5 group relative">
+                <button
+                  onClick={() => removeRule(rule.id)}
+                  className="absolute top-3 right-3 text-slate-300 hover:text-rose-400 transition-colors opacity-0 group-hover:opacity-100"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+                <input
+                  type="text"
+                  value={rule.title}
+                  onChange={(e) => updateRule(rule.id, "title", e.target.value)}
+                  placeholder="Rule title..."
+                  className="w-full bg-white rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all"
+                />
                 <input
                   type="text"
                   value={rule.description}
                   onChange={(e) => updateRule(rule.id, "description", e.target.value)}
                   placeholder="Description (optional)"
-                  className="w-full h-8 rounded-md border border-input bg-white px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="w-full bg-white rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all"
                 />
               </div>
             ))}
             <button
               onClick={addRule}
-              className="w-full py-2.5 text-sm text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition-colors flex items-center justify-center gap-1.5"
+              className="w-full py-3 rounded-xl border border-dashed border-slate-300 text-sm text-slate-400 hover:text-purple-600 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center justify-center gap-1.5"
             >
               <Plus className="w-4 h-4" />Add Rule
             </button>
