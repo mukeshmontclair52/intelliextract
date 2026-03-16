@@ -213,6 +213,11 @@ export default function Support() {
             <div className="w-2 h-2 rounded-full bg-emerald-400" />
             <span className="text-xs text-slate-500">Online</span>
           </div>
+          <Link to="/ServiceStatus">
+            <Button size="sm" variant="outline" className="text-xs h-8 gap-1.5 border-slate-300">
+              <Activity className="w-3.5 h-3.5" />Service Status
+            </Button>
+          </Link>
           <Button
             size="sm"
             className="bg-indigo-600 hover:bg-indigo-700 text-xs h-8 gap-1.5"
