@@ -16,10 +16,11 @@ import { cn } from "@/lib/utils";
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const TOOLS = [
-  { key: "parse",   label: "Parse",   icon: Scan,         gradient: "from-emerald-500 to-teal-500",   accent: "emerald" },
-  { key: "split",   label: "Split",   icon: Scissors,     gradient: "from-rose-500 to-pink-500",      accent: "rose"    },
-  { key: "extract", label: "Extract", icon: FileSearch2,  gradient: "from-violet-500 to-indigo-500",  accent: "violet"  },
-  { key: "chat",    label: "Chat",    icon: MessageSquare,gradient: "from-sky-500 to-blue-500",       accent: "sky"     },
+  { key: "parse",   label: "Parse",   icon: Scan,            gradient: "from-emerald-500 to-teal-500",   accent: "emerald" },
+  { key: "split",   label: "Split",   icon: Scissors,        gradient: "from-rose-500 to-pink-500",      accent: "rose"    },
+  { key: "extract", label: "Extract", icon: FileSearch2,     gradient: "from-violet-500 to-indigo-500",  accent: "violet"  },
+  { key: "chat",    label: "Chat",    icon: MessageSquare,   gradient: "from-sky-500 to-blue-500",       accent: "sky"     },
+  { key: "compare", label: "Compare", icon: ArrowLeftRight,  gradient: "from-indigo-500 to-blue-600",    accent: "indigo"  },
 ];
 
 const MOCK_SPLIT_DOC_CONFIGS = [
@@ -707,6 +708,7 @@ export default function PlaygroundV2() {
           {activeTool === "split"   && <SplitPanel />}
           {activeTool === "extract" && <ExtractPanel onRunExtract={() => navigate(createPageUrl("ExtractionResult"))} />}
           {activeTool === "chat"    && <ChatPanel />}
+          {activeTool === "compare" && <ComparePanel defaultTool="parse" />}
         </div>
       </div>
 
