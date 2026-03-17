@@ -4,8 +4,9 @@ import {
   Scissors, Scan, FileSearch2, MessageSquare, X, FileJson, RefreshCw,
   Copy, RotateCcw, Sparkles, FolderOpen, ChevronDown, Play, Trash2,
   Send, Mail, Zap, CheckCircle2, AlertCircle, Clock, ChevronUp,
-  Layers, Settings2, Eye, Code2, ArrowRight, Wand2
+  Layers, Settings2, Eye, Code2, ArrowRight, Wand2, ArrowLeftRight
 } from "lucide-react";
+import ComparePanel from "@/components/playground/ComparePanel";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";

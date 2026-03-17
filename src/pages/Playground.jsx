@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Upload, FileText, Download, ChevronLeft, ChevronRight, Plus, Share2, Scissors, Scan, FileSearch2, MessageSquare, X, FileJson, RefreshCw, Copy, RotateCcw, Sparkles, FolderOpen, ChevronDown, Play, Trash2, Mail, Send } from "lucide-react";
+import { Upload, FileText, Download, ChevronLeft, ChevronRight, Plus, Share2, Scissors, Scan, FileSearch2, MessageSquare, X, FileJson, RefreshCw, Copy, RotateCcw, Sparkles, FolderOpen, ChevronDown, Play, Trash2, Mail, Send, ArrowLeftRight } from "lucide-react";
+import ComparePanel from "@/components/playground/ComparePanel";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
