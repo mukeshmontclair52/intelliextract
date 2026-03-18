@@ -57,8 +57,6 @@ const CAPABILITIES = [
 const STEPS = [
   { id: "identity", label: "Document Identity" },
   { id: "capabilities", label: "Capabilities" },
-  { id: "preprocessing", label: "Pre-Processing" },
-  { id: "postprocessing", label: "Post-Processing" },
   { id: "review", label: "Review" },
 ];
 
