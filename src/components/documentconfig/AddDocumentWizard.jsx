@@ -232,9 +232,14 @@ function StepPostProcessing({ settings, onChange }) {
     { key: "database", label: "Database", desc: "Persist results to a relational database.", configLabel: "Table / Collection Name", configPlaceholder: "e.g. extraction_results" },
   ];
 
+  const exportOptions = [
+    { key: "s3", label: "AWS S3", desc: "Export results to an Amazon S3 bucket.", configLabel: "S3 Bucket Name", configPlaceholder: "e.g. my-doc-bucket" },
+    { key: "cds", label: "CDS", desc: "Export to the Content Delivery Storage.", configLabel: "CDS Endpoint", configPlaceholder: "https://cds.example.com/store" },
+    { key: "webhookExport", label: "Webhook URL", desc: "POST results to an external webhook endpoint.", configLabel: "Webhook URL", configPlaceholder: "https://hooks.example.com/..." },
+  ];
+
   const notificationOptions = [
     { key: "email", label: "Email Notification", desc: "Send an email when processing completes.", configLabel: "Recipient Email(s)", configPlaceholder: "e.g. ops@company.com" },
-    { key: "webhook", label: "Webhook", desc: "POST results to an external webhook URL.", configLabel: "Webhook URL", configPlaceholder: "https://hooks.example.com/..." },
     { key: "kafka", label: "Kafka", desc: "Publish events to a Kafka topic.", configLabel: "Kafka Topic", configPlaceholder: "e.g. doc-processing-events" },
     { key: "workhub", label: "Workhub Ticket", desc: "Create a Workhub ticket upon completion.", configLabel: "Workhub Project Key", configPlaceholder: "e.g. DOC-OPS" },
   ];
