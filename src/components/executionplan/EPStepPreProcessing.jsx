@@ -28,7 +28,7 @@ export default function EPStepPreProcessing({ data, onChange }) {
         {OPTIONS.map(({ key, label, description, icon: Icon, color }) => {
           const active = !!data?.[key];
           return (
-            <div key={key}>
+            <div key={key} className="space-y-1">
               <button
                 type="button"
                 onClick={() => update(key, !active)}
