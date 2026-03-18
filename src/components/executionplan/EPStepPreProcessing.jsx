@@ -28,36 +28,36 @@ export default function EPStepPreProcessing({ data, onChange }) {
         {OPTIONS.map(({ key, label, description, icon: Icon, color }) => {
           const active = !!data?.[key];
           return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => update(key, !active)}
-              className={cn(
-                "w-full text-left flex items-start gap-4 px-4 py-3.5 rounded-xl border-2 transition-all",
-                active ? `border-current ${color.split(" ")[2]} bg-opacity-30 ${color}` : "border-slate-200 bg-white hover:border-slate-300"
+            <div key={key}>
+              <button
+                type="button"
+                onClick={() => update(key, !active)}
+                className={cn(
+                  "w-full text-left flex items-start gap-4 px-4 py-3.5 rounded-xl border-2 transition-all",
+                  active ? `border-current ${color.split(" ")[2]} bg-opacity-30 ${color}` : "border-slate-200 bg-white hover:border-slate-300"
+                )}
+              >
+                <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 border", active ? color : "bg-slate-100 border-slate-200")}>
+                  <Icon className={cn("w-4 h-4", active ? color.split(" ")[0] : "text-slate-400")} />
+                </div>
+                <div className="flex-1">
+                  <p className={cn("text-sm font-semibold", active ? color.split(" ")[0] : "text-slate-700")}>{label}</p>
+                  <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{description}</p>
+                </div>
+                <div className={cn("w-4 h-4 rounded-full border-2 flex-shrink-0 mt-1 transition-all", active ? `border-current bg-current ${color.split(" ")[0]}` : "border-slate-300")} />
+              </button>
+              {key === "checkPassword" && active && (
+                <div className="mt-2 px-4">
+                  <Input
+                    type="password"
+                    placeholder="Enter document password (optional)"
+                    className="h-8 text-xs"
+                    value={data?.documentPassword || ""}
+                    onChange={(e) => update("documentPassword", e.target.value)}
+                  />
+                </div>
               )}
-            >
-              <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 border", active ? color : "bg-slate-100 border-slate-200")}>
-                <Icon className={cn("w-4 h-4", active ? color.split(" ")[0] : "text-slate-400")} />
-              </div>
-              <div className="flex-1">
-                <p className={cn("text-sm font-semibold", active ? color.split(" ")[0] : "text-slate-700")}>{label}</p>
-                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{description}</p>
-              </div>
-              <div className={cn("w-4 h-4 rounded-full border-2 flex-shrink-0 mt-1 transition-all", active ? `border-current bg-current ${color.split(" ")[0]}` : "border-slate-300")} />
-            </button>
-            {key === "checkPassword" && active && (
-              <div className="mt-1 ml-[52px]">
-                <Input
-                  type="password"
-                  placeholder="Enter document password (optional)"
-                  className="h-8 text-xs"
-                  value={data?.documentPassword || ""}
-                  onChange={(e) => update("documentPassword", e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-            )}
+            </div>
           );
         })}
       </div>
