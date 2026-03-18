@@ -46,6 +46,18 @@ export default function EPStepPreProcessing({ data, onChange }) {
               </div>
               <div className={cn("w-4 h-4 rounded-full border-2 flex-shrink-0 mt-1 transition-all", active ? `border-current bg-current ${color.split(" ")[0]}` : "border-slate-300")} />
             </button>
+            {key === "checkPassword" && active && (
+              <div className="mt-1 ml-[52px]">
+                <Input
+                  type="password"
+                  placeholder="Enter document password (optional)"
+                  className="h-8 text-xs"
+                  value={data?.documentPassword || ""}
+                  onChange={(e) => update("documentPassword", e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            )}
           );
         })}
       </div>
