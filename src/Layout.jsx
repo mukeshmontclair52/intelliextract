@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, ArrowLeftRight, Settings, FileSearch, UserPlus, ChevronRight, FolderOpen, FlaskConical, ChevronLeft, Menu, LifeBuoy, BarChart2, Beaker } from "lucide-react";
+import { LayoutDashboard, ArrowLeftRight, Settings, FileSearch, UserPlus, ChevronRight, FolderOpen, FlaskConical, ChevronLeft, Menu, LifeBuoy, BarChart2, Beaker, Play } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", page: "Dashboard", icon: LayoutDashboard },
@@ -12,6 +12,7 @@ const navItems = [
   { label: "Playground", page: "Playground", icon: FlaskConical },
   { label: "Playground V2", page: "PlaygroundV2", icon: Beaker },
   { label: "Client Profile", page: "Onboarding", icon: UserPlus },
+  { label: "Execution Plan", page: "ExecutionPlan", icon: Play },
   { label: "Support", page: "Support", icon: LifeBuoy },
 ];
 

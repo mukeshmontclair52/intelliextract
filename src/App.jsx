@@ -6,6 +6,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import ServiceStatus from './pages/ServiceStatus';
+import ExecutionPlan from './pages/ExecutionPlan';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/ServiceStatus" element={<LayoutWrapper currentPageName="ServiceStatus"><ServiceStatus /></LayoutWrapper>} />
+      <Route path="/ExecutionPlan" element={<LayoutWrapper currentPageName="ExecutionPlan"><ExecutionPlan /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
