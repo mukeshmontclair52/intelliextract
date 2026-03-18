@@ -57,6 +57,7 @@ const CAPABILITIES = [
 const STEPS = [
   { id: "identity", label: "Document Identity" },
   { id: "capabilities", label: "Capabilities" },
+  { id: "setup", label: "Document Setup" },
   { id: "review", label: "Review" },
 ];
 
@@ -589,9 +590,11 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
       if (initialData.configs[key]?.enabled) acc[key] = true;
       return acc;
     }, {}),
+    setup: initialData.setup || {},
   } : {
     name: "",
     capabilities: {},
+    setup: {},
   });
 
   const update = (patch) => setData((d) => ({ ...d, ...patch }));
@@ -614,6 +617,11 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
     ["extraction", "parse", "split", "redaction"].forEach((key) => {
       configs[key] = { enabled: enabledKeys.includes(key) };
     });
+    // Merge setup data into configs
+    const selectedCap = Object.keys(data.capabilities).find((k) => data.capabilities[k]);
+    if (selectedCap && data.setup?.[selectedCap]) {
+      configs[selectedCap] = { enabled: true, ...data.setup[selectedCap] };
+    }
     onSave({
       id: Date.now(),
       name: data.name,
@@ -625,6 +633,7 @@ export default function AddDocumentWizard({ initialData, onCancel, onSave }) {
   const stepContent = [
     <StepIdentity key="identity" data={data} onChange={update} />,
     <StepCapabilities key="capabilities" capabilities={data.capabilities} onSelect={selectCapability} />,
+    <StepDocumentSetup key="setup" capabilities={data.capabilities} setupData={data.setup} onChange={(setup) => update({ setup })} />,
     <StepReview key="review" data={data} />,
   ];
 
