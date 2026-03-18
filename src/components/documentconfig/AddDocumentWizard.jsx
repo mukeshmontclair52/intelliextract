@@ -290,37 +290,45 @@ function StepPostProcessing({ settings, onChange }) {
         </div>
       </div>
 
-      {/* Storage Options */}
+      {/* Export */}
       <div>
-        <p className="text-sm font-medium text-slate-700 mb-3 flex items-center gap-1.5"><HardDrive className="w-4 h-4 text-indigo-500" />Storage Options</p>
+        <p className="text-sm font-medium text-slate-700 mb-1 flex items-center gap-1.5"><HardDrive className="w-4 h-4 text-indigo-500" />Export</p>
+        <p className="text-xs text-slate-400 mb-3">Multiple options can be selected.</p>
         <div className="space-y-2">
-          {storageOptions.map(({ key, label, desc, configLabel, configPlaceholder }) => (
-            <div key={key}>
-              <div
-                onClick={() => onChange({ ...settings, storage: settings.storage === key ? null : key })}
-                className={cn(
-                  "rounded-lg border-2 p-3 flex items-start justify-between gap-3 cursor-pointer transition-all",
-                  settings.storage === key ? "border-indigo-200 bg-indigo-50" : "border-slate-200 bg-white hover:border-slate-300"
+          {exportOptions.map(({ key, label, desc, configLabel, configPlaceholder }) => {
+            const active = settings.exports?.includes(key);
+            return (
+              <div key={key}>
+                <div
+                  onClick={() => {
+                    const current = settings.exports || [];
+                    const updated = current.includes(key) ? current.filter(n => n !== key) : [...current, key];
+                    onChange({ ...settings, exports: updated });
+                  }}
+                  className={cn(
+                    "rounded-lg border-2 p-3 flex items-start justify-between gap-3 cursor-pointer transition-all",
+                    active ? "border-indigo-200 bg-indigo-50" : "border-slate-200 bg-white hover:border-slate-300"
+                  )}
+                >
+                  <div>
+                    <p className={cn("text-sm font-semibold", active ? "text-slate-800" : "text-slate-600")}>{label}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+                  </div>
+                  <div className={cn("w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5", active ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
+                    {active && <Check className="w-3 h-3 text-white" />}
+                  </div>
+                </div>
+                {active && (
+                  <ConfigField
+                    label={configLabel}
+                    placeholder={configPlaceholder}
+                    value={settings.exportConfig?.[key]}
+                    onChange={(v) => updateConfig("exportConfig", key, v)}
+                  />
                 )}
-              >
-                <div>
-                  <p className={cn("text-sm font-semibold", settings.storage === key ? "text-slate-800" : "text-slate-600")}>{label}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
-                </div>
-                <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5", settings.storage === key ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-white")}>
-                  {settings.storage === key && <Check className="w-3 h-3 text-white" />}
-                </div>
               </div>
-              {settings.storage === key && (
-                <ConfigField
-                  label={configLabel}
-                  placeholder={configPlaceholder}
-                  value={settings.storageConfig?.[key]}
-                  onChange={(v) => updateConfig("storageConfig", key, v)}
-                />
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
