@@ -226,12 +226,6 @@ function StepPostProcessing({ settings, onChange }) {
     { key: "html", label: "HTML", desc: "HTML output for web rendering or email delivery.", configLabel: "CSS Class Prefix (optional)", configPlaceholder: "e.g. doc-extract" },
   ];
 
-  const storageOptions = [
-    { key: "s3", label: "AWS S3", desc: "Store outputs in an Amazon S3 bucket.", configLabel: "S3 Bucket Name", configPlaceholder: "e.g. my-doc-bucket" },
-    { key: "cds", label: "CDS", desc: "Store in the Content Delivery Storage.", configLabel: "CDS Endpoint", configPlaceholder: "https://cds.example.com/store" },
-    { key: "database", label: "Database", desc: "Persist results to a relational database.", configLabel: "Table / Collection Name", configPlaceholder: "e.g. extraction_results" },
-  ];
-
   const exportOptions = [
     { key: "s3", label: "AWS S3", desc: "Export results to an Amazon S3 bucket.", configLabel: "S3 Bucket Name", configPlaceholder: "e.g. my-doc-bucket" },
     { key: "cds", label: "CDS", desc: "Export to the Content Delivery Storage.", configLabel: "CDS Endpoint", configPlaceholder: "https://cds.example.com/store" },
