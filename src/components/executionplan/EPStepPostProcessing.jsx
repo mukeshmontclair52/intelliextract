@@ -1,7 +1,13 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { FileJson, Table, FileText, Mail, Radio, Database, HardDrive, Webhook } from "lucide-react";
+import { FileJson, Table, FileText, Mail, Radio, Database, HardDrive, Webhook, Wand2, CalendarClock, ArrowLeftRight, ShieldCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
+
+const DECORATION_OPTIONS = [
+  { key: "dec_dateFormat", label: "Date Format", icon: CalendarClock, description: "Normalize extracted dates to a standard format (e.g. MM/DD/YYYY)." },
+  { key: "dec_eciToGwmid", label: "ECI to GWMID", icon: ArrowLeftRight, description: "Translate ECI identifiers to their corresponding GWMID values." },
+  { key: "dec_validateAccount", label: "Validate Account No.", icon: ShieldCheck, description: "Run checksum validation on extracted account numbers." },
+];
 
 const OUTPUT_FORMATS = [
   { value: "json", label: "JSON", icon: FileJson },
