@@ -330,15 +330,18 @@ function SplitOutput({ file }) {
 function ExtractOutput({ file }) {
   const [ran, setRan] = useState(false);
   const [running, setRunning] = useState(false);
-  const [mode, setMode] = useState(null);
+  const [selectedConfig, setSelectedConfig] = useState(null);
+  const [showPicker, setShowPicker] = useState(false);
+  const [footerMode, setFooterMode] = useState(null); // "ai" | "json" | "scratch"
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
-  const [showPicker, setShowPicker] = useState(false);
 
   const run = () => {
     setRunning(true);
     setTimeout(() => { setRunning(false); setRan(true); }, 1500);
   };
+
+  const canRun = !!selectedConfig && !!file;
 
   if (ran) {
     return (
@@ -361,152 +364,170 @@ function ExtractOutput({ file }) {
     );
   }
 
-  const SCHEMA_METHODS = [
-    {
-      key: "ai",
-      icon: Wand2,
-      label: "Generate with AI",
-      desc: "Describe fields in plain English and let AI build the schema for you.",
-      badge: "Recommended",
-      color: "violet",
-    },
-    {
-      key: "json",
-      icon: Code2,
-      label: "Upload JSON Schema",
-      desc: "Paste or upload an existing JSON schema definition.",
-      badge: null,
-      color: "slate",
-    },
-    {
-      key: "scratch",
-      icon: Plus,
-      label: "Build from Scratch",
-      desc: "Manually add fields one by one using the visual builder.",
-      badge: null,
-      color: "slate",
-    },
-  ];
-
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-5 pt-5 pb-4 border-b border-slate-100 flex-shrink-0">
-        <p className="text-sm font-bold text-slate-800">Define Extraction Schema</p>
-        <p className="text-xs text-slate-400 mt-0.5">Pick a method to configure what data to extract.</p>
-      </div>
 
-      <div className="flex-1 overflow-auto p-4 space-y-4">
-        {/* Quick load from config */}
-        <div className="rounded-xl border border-slate-200 overflow-hidden bg-slate-50">
-          <button onClick={() => setShowPicker(!showPicker)} className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-white transition-colors">
-            <div className="flex items-center gap-2">
-              <FolderOpen className="w-3.5 h-3.5 text-violet-400" />
-              <span className="text-xs font-medium text-slate-500">Load from saved Document Config</span>
+      {/* ── Main body: Document Config selector ── */}
+      <div className="flex-1 flex flex-col justify-center px-5 py-6 gap-5 overflow-auto">
+
+        {/* Hero label */}
+        <div>
+          <p className="text-xs font-semibold text-violet-500 uppercase tracking-widest mb-1">Step 1</p>
+          <p className="text-lg font-bold text-slate-800">Select a Document Config</p>
+          <p className="text-xs text-slate-400 mt-1">Choose the configuration that defines what to extract.</p>
+        </div>
+
+        {/* Dropdown trigger */}
+        <div className="relative">
+          <button
+            onClick={() => setShowPicker(!showPicker)}
+            className={cn(
+              "w-full flex items-center justify-between px-4 py-3.5 rounded-2xl border-2 transition-all bg-white",
+              selectedConfig
+                ? "border-violet-400 shadow-md shadow-violet-100"
+                : "border-slate-200 hover:border-violet-300"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0", selectedConfig ? "bg-violet-100" : "bg-slate-100")}>
+                <FolderOpen className={cn("w-4 h-4", selectedConfig ? "text-violet-500" : "text-slate-400")} />
+              </div>
+              {selectedConfig ? (
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-violet-700">{selectedConfig.name}</p>
+                  <p className="text-xs text-slate-400 mt-0.5 truncate max-w-[220px]">{selectedConfig.prompt}</p>
+                </div>
+              ) : (
+                <span className="text-sm font-medium text-slate-400">Choose a document config…</span>
+              )}
             </div>
-            <ChevronDown className={cn("w-3.5 h-3.5 text-slate-400 transition-transform", showPicker && "rotate-180")} />
+            <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform flex-shrink-0", showPicker && "rotate-180")} />
           </button>
+
+          {/* Dropdown list */}
           {showPicker && (
-            <div className="border-t border-slate-200 bg-white">
-              {MOCK_DOC_CONFIGS.map(cfg => (
-                <button key={cfg.id} onClick={() => { setPrompt(cfg.prompt); setMode("ai"); setShowPicker(false); }} className="w-full text-left px-4 py-2.5 text-xs hover:bg-violet-50 transition-colors border-b border-slate-50 last:border-0">
-                  <p className="font-semibold text-slate-700">{cfg.name}</p>
-                  <p className="text-slate-400 mt-0.5 truncate">{cfg.prompt}</p>
+            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-10">
+              {MOCK_DOC_CONFIGS.map((cfg, i) => (
+                <button
+                  key={cfg.id}
+                  onClick={() => { setSelectedConfig(cfg); setShowPicker(false); }}
+                  className={cn(
+                    "w-full text-left px-4 py-3.5 hover:bg-violet-50 transition-colors flex items-center justify-between gap-3",
+                    i !== MOCK_DOC_CONFIGS.length - 1 && "border-b border-slate-50",
+                    selectedConfig?.id === cfg.id && "bg-violet-50"
+                  )}
+                >
+                  <div>
+                    <p className={cn("text-sm font-semibold", selectedConfig?.id === cfg.id ? "text-violet-700" : "text-slate-700")}>{cfg.name}</p>
+                    <p className="text-xs text-slate-400 mt-0.5 truncate max-w-[260px]">{cfg.prompt}</p>
+                  </div>
+                  {selectedConfig?.id === cfg.id && <CheckCircle2 className="w-4 h-4 text-violet-500 flex-shrink-0" />}
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        {/* Method selector cards */}
-        <div className="space-y-2.5">
-          {SCHEMA_METHODS.map(({ key, icon: Icon, label, desc, badge }) => {
-            const active = mode === key;
-            return (
-              <div
-                key={key}
-                className={cn(
-                  "rounded-2xl border-2 overflow-hidden transition-all",
-                  active ? "border-violet-300 bg-white shadow-md shadow-violet-100" : "border-slate-200 bg-white hover:border-slate-300 cursor-pointer"
-                )}
-                onClick={() => !active && setMode(key)}
-              >
-                {/* Card header */}
-                <div className="flex items-center gap-3.5 px-4 py-3.5">
-                  <div className={cn(
-                    "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all",
-                    active ? "bg-gradient-to-br from-violet-500 to-indigo-500 shadow-sm shadow-violet-200" : "bg-slate-100"
-                  )}>
-                    <Icon className={cn("w-4.5 h-4.5", active ? "text-white" : "text-slate-400")} style={{ width: "18px", height: "18px" }} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className={cn("text-sm font-semibold", active ? "text-violet-700" : "text-slate-700")}>{label}</p>
-                      {badge && (
-                        <span className="text-[10px] font-bold bg-violet-100 text-violet-600 rounded-full px-2 py-0.5">{badge}</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{desc}</p>
-                  </div>
-                  {active && (
-                    <div className="w-5 h-5 rounded-full bg-violet-500 flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-                </div>
+        {/* Selected config detail card */}
+        {selectedConfig && (
+          <div className="bg-violet-50 border border-violet-200 rounded-2xl px-4 py-4 space-y-2">
+            <p className="text-[10px] font-bold text-violet-400 uppercase tracking-wider">Extraction Prompt</p>
+            <p className="text-xs text-violet-800 leading-relaxed">{selectedConfig.prompt}</p>
+          </div>
+        )}
 
-                {/* Expanded content */}
-                {active && key === "ai" && (
-                  <div className="px-4 pb-4 pt-1 border-t border-violet-100 space-y-2.5 bg-violet-50/40">
-                    <textarea
-                      className="w-full border border-violet-200 rounded-xl px-3 py-2.5 text-xs text-slate-700 placeholder:text-slate-300 outline-none focus:ring-2 focus:ring-violet-200 resize-none bg-white"
-                      rows={3}
-                      placeholder="e.g. Extract invoice number, vendor name, total amount, due date…"
-                      value={prompt}
-                      onChange={e => setPrompt(e.target.value)}
-                      onClick={e => e.stopPropagation()}
-                    />
-                    <Button
-                      onClick={e => { e.stopPropagation(); setGenerating(true); setTimeout(() => setGenerating(false), 1500); }}
-                      disabled={generating || !prompt.trim()}
-                      size="sm"
-                      className="w-full h-8 rounded-xl text-xs border-0 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 gap-1.5"
-                    >
-                      {generating ? <><RefreshCw className="w-3 h-3 animate-spin" />Generating schema…</> : <><Sparkles className="w-3 h-3" />Generate Schema</>}
-                    </Button>
-                  </div>
+        {/* Empty hint */}
+        {!selectedConfig && (
+          <div className="flex flex-col items-center gap-2 py-4 opacity-40">
+            <FileSearch2 className="w-8 h-8 text-slate-300" />
+            <p className="text-xs text-slate-400 text-center">Select a config above to enable extraction</p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Footer: secondary options + Run ── */}
+      <div className="border-t border-slate-100 flex-shrink-0">
+        {/* Footer mode expanded panel */}
+        {footerMode === "ai" && (
+          <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 space-y-2">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-xs font-semibold text-slate-600">Generate with AI</p>
+              <button onClick={() => setFooterMode(null)} className="text-slate-400 hover:text-slate-600"><X className="w-3.5 h-3.5" /></button>
+            </div>
+            <textarea
+              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 placeholder:text-slate-300 outline-none focus:ring-2 focus:ring-violet-200 resize-none bg-white"
+              rows={2}
+              placeholder="Describe what to extract…"
+              value={prompt}
+              onChange={e => setPrompt(e.target.value)}
+            />
+            <Button
+              onClick={() => { setGenerating(true); setTimeout(() => setGenerating(false), 1500); }}
+              disabled={generating || !prompt.trim()}
+              size="sm"
+              className="w-full h-7 rounded-lg text-xs border-0 bg-gradient-to-r from-violet-500 to-indigo-500 gap-1.5"
+            >
+              {generating ? <><RefreshCw className="w-3 h-3 animate-spin" />Generating…</> : <><Sparkles className="w-3 h-3" />Generate</>}
+            </Button>
+          </div>
+        )}
+        {footerMode === "json" && (
+          <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 space-y-2">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-xs font-semibold text-slate-600">Upload JSON Schema</p>
+              <button onClick={() => setFooterMode(null)} className="text-slate-400 hover:text-slate-600"><X className="w-3.5 h-3.5" /></button>
+            </div>
+            <textarea
+              className="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-700 placeholder:text-slate-300 outline-none focus:ring-2 focus:ring-violet-200 resize-none bg-white"
+              rows={3}
+              placeholder={'{ "fields": [...] }'}
+            />
+          </div>
+        )}
+        {footerMode === "scratch" && (
+          <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-slate-600">Build from Scratch</p>
+              <button onClick={() => setFooterMode(null)} className="text-slate-400 hover:text-slate-600"><X className="w-3.5 h-3.5" /></button>
+            </div>
+            <p className="text-xs text-slate-400 text-center py-2">Visual field builder coming soon.</p>
+          </div>
+        )}
+
+        {/* Footer menu row */}
+        <div className="flex items-center px-4 py-2.5 gap-1">
+          <div className="flex items-center gap-0.5 flex-1">
+            {[
+              { key: "ai", icon: Wand2, label: "AI Generate" },
+              { key: "json", icon: Code2, label: "JSON Schema" },
+              { key: "scratch", icon: Plus, label: "From Scratch" },
+            ].map(({ key, icon: Icon, label }) => (
+              <button
+                key={key}
+                onClick={() => setFooterMode(footerMode === key ? null : key)}
+                className={cn(
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all",
+                  footerMode === key
+                    ? "bg-violet-100 text-violet-700"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-100"
                 )}
-                {active && key === "json" && (
-                  <div className="px-4 pb-4 pt-1 border-t border-slate-100 bg-slate-50/50">
-                    <textarea
-                      className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-700 placeholder:text-slate-300 outline-none focus:ring-2 focus:ring-violet-200 resize-none bg-white"
-                      rows={5}
-                      placeholder={'{\n  "fields": [\n    { "name": "invoice_number", "type": "string" }\n  ]\n}'}
-                      onClick={e => e.stopPropagation()}
-                    />
-                  </div>
-                )}
-                {active && key === "scratch" && (
-                  <div className="px-4 pb-4 pt-3 border-t border-slate-100 bg-slate-50/50">
-                    <p className="text-xs text-slate-400 text-center py-4">Visual field builder coming soon.</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              >
+                <Icon className="w-3 h-3" />
+                {label}
+              </button>
+            ))}
+          </div>
+          <Button
+            size="sm"
+            onClick={run}
+            disabled={running || !canRun}
+            className="h-8 px-4 rounded-xl text-xs border-0 gap-1.5 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 disabled:opacity-40"
+          >
+            {running ? <><RefreshCw className="w-3 h-3 animate-spin" />Running…</> : <><Zap className="w-3 h-3" />Run Extract</>}
+          </Button>
         </div>
       </div>
 
-      <div className="px-4 py-3 border-t border-slate-100 flex justify-end">
-        <Button
-          size="sm"
-          onClick={run}
-          disabled={running || !file || !mode}
-          className="h-8 rounded-xl text-xs border-0 gap-1.5 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600"
-        >
-          {running ? <><RefreshCw className="w-3 h-3 animate-spin" />Running…</> : <><Zap className="w-3 h-3" />Run Extract</>}
-        </Button>
-      </div>
     </div>
   );
 }
