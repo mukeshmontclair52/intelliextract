@@ -423,21 +423,6 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* Detail Drawer */}
-      <AnimatePresence>
-        {selectedTxn && (
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 420, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-            style={{ height: "100vh" }}
-          >
-            <DetailDrawer txn={selectedTxn} onClose={() => setSelectedTxn(null)} onRerun={handleRerun} onReject={handleReject} />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

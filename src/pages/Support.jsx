@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { KNOWLEDGE_BASE } from "../components/support/knowledgeBase";
 import { Button } from "@/components/ui/button";
-import { Send, Bot, User, LifeBuoy, Code2, Briefcase, Ticket, Bell, CheckCircle, X, Activity } from "lucide-react";
+import { Send, Bot, User, LifeBuoy, Code2, Briefcase, Ticket, Bell, CheckCircle, X, Activity, Map } from "lucide-react";
+import WorkflowDiagram from "../components/support/WorkflowDiagram";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -154,6 +155,7 @@ function NotifyTeamsModal({ onClose }) {
 
 export default function Support() {
   const [showModal, setShowModal] = useState(false);
+  const [showWorkflow, setShowWorkflow] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -213,6 +215,14 @@ export default function Support() {
             <div className="w-2 h-2 rounded-full bg-emerald-400" />
             <span className="text-xs text-slate-500">Online</span>
           </div>
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-xs h-8 gap-1.5 border-slate-300"
+            onClick={() => setShowWorkflow(true)}
+          >
+            <Map className="w-3.5 h-3.5" />How it Works
+          </Button>
           <Link to="/ServiceStatus">
             <Button size="sm" variant="outline" className="text-xs h-8 gap-1.5 border-slate-300">
               <Activity className="w-3.5 h-3.5" />Service Status
@@ -285,6 +295,7 @@ export default function Support() {
       </div>
 
       {showModal && <NotifyTeamsModal onClose={() => setShowModal(false)} />}
+      {showWorkflow && <WorkflowDiagram onClose={() => setShowWorkflow(false)} />}
 
       {/* Input area */}
       <div className="bg-white border-t border-slate-200 px-6 py-4">
