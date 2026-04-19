@@ -151,20 +151,27 @@ function SchemaModal({ onClose }) {
 
 // ── Result Sections ───────────────────────────────────────────────────────────
 
-function FlatFieldsSection({ onJump }) {
+function FlatFieldsSection({ onJump, confFilter }) {
+  const visible = MOCK_FLAT_FIELDS.filter(f => {
+    if (confFilter === "high") return f.confidence >= 0.90;
+    if (confFilter === "mid")  return f.confidence >= 0.70 && f.confidence < 0.90;
+    if (confFilter === "low")  return f.confidence < 0.70;
+    return true;
+  });
   const avgConf = MOCK_FLAT_FIELDS.reduce((s, f) => s + f.confidence, 0) / MOCK_FLAT_FIELDS.length;
+  if (visible.length === 0) return null;
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/60">
         <div className="flex items-center gap-2">
           <AlignLeft className="w-3.5 h-3.5 text-slate-400" />
           <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">Flat Fields</span>
-          <span className="text-xs text-slate-400">{MOCK_FLAT_FIELDS.length} fields</span>
+          <span className="text-xs text-slate-400">{visible.length} fields</span>
         </div>
         <ConfidencePill value={avgConf} />
       </div>
       <div className="divide-y divide-slate-50">
-        {MOCK_FLAT_FIELDS.map((f) => (
+        {visible.map((f) => (
           <div key={f.key} className="flex items-center justify-between px-4 py-2.5 hover:bg-indigo-50/30 group transition-colors">
             <div className="flex items-center gap-2 min-w-0">
               <span className="font-mono text-xs text-slate-500 truncate">{f.key}</span>
@@ -187,8 +194,15 @@ function FlatFieldsSection({ onJump }) {
   );
 }
 
-function NestedSection({ onJump }) {
+function NestedSection({ onJump, confFilter }) {
   const [open, setOpen] = useState(true);
+  const visible = MOCK_NESTED.children.filter(c => {
+    if (confFilter === "high") return c.confidence >= 0.90;
+    if (confFilter === "mid")  return c.confidence >= 0.70 && c.confidence < 0.90;
+    if (confFilter === "low")  return c.confidence < 0.70;
+    return true;
+  });
+  if (visible.length === 0) return null;
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
       <button
@@ -208,7 +222,7 @@ function NestedSection({ onJump }) {
       </button>
       {open && (
         <div className="divide-y divide-slate-50">
-          {MOCK_NESTED.children.map((c) => (
+          {visible.map((c) => (
             <div key={c.key} className="flex items-center justify-between px-4 py-2.5 pl-8 hover:bg-indigo-50/30 group transition-colors">
               <span className="font-mono text-xs text-slate-500 truncate">{c.key}</span>
               <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
@@ -229,8 +243,15 @@ function NestedSection({ onJump }) {
   );
 }
 
-function TableSection({ onJump }) {
+function TableSection({ onJump, confFilter }) {
   const [open, setOpen] = useState(true);
+  const visibleRows = MOCK_TABLE.rows.filter(r => {
+    if (confFilter === "high") return r.confidence >= 0.90;
+    if (confFilter === "mid")  return r.confidence >= 0.70 && r.confidence < 0.90;
+    if (confFilter === "low")  return r.confidence < 0.70;
+    return true;
+  });
+  if (visibleRows.length === 0) return null;
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
       <button
@@ -240,7 +261,7 @@ function TableSection({ onJump }) {
         <div className="flex items-center gap-2">
           <Table2 className="w-3.5 h-3.5 text-slate-400" />
           <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">Tabular Data</span>
-          <span className="text-xs text-slate-400">{MOCK_TABLE.label} · {MOCK_TABLE.rows.length} rows</span>
+          <span className="text-xs text-slate-400">{MOCK_TABLE.label} · {visibleRows.length} rows</span>
         </div>
         <div className="flex items-center gap-2">
           <ConfidencePill value={MOCK_TABLE.confidence} />
@@ -259,7 +280,7 @@ function TableSection({ onJump }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {MOCK_TABLE.rows.map((row, i) => (
+              {visibleRows.map((row, i) => (
                 <tr
                   key={i}
                   onClick={() => onJump(row.page)}
@@ -291,7 +312,15 @@ function TableSection({ onJump }) {
 export default function ExtractionResult() {
   const [page, setPage] = useState(2);
   const [showSchema, setShowSchema] = useState(false);
+  const [confFilter, setConfFilter] = useState("all");
   const totalPages = 24;
+
+  const matchesFilter = (conf) => {
+    if (confFilter === "high") return conf >= 0.90;
+    if (confFilter === "mid")  return conf >= 0.70 && conf < 0.90;
+    if (confFilter === "low")  return conf < 0.70;
+    return true;
+  };
 
   const overallConf = 0.94;
 
@@ -385,10 +414,34 @@ export default function ExtractionResult() {
               <span className="text-xs text-slate-400">{MOCK_FLAT_FIELDS.length + MOCK_NESTED.children.length + MOCK_TABLE.rows.length} values extracted</span>
             </div>
           </div>
+          {/* Confidence filter bar */}
+          <div className="flex items-center gap-2 px-5 py-2.5 border-b border-slate-100 bg-white flex-shrink-0">
+            <span className="text-xs text-slate-400 font-medium mr-1">Confidence:</span>
+            {[
+              { key: "all", label: "All" },
+              { key: "high", label: "High  ≥ 90%", dot: "bg-emerald-400" },
+              { key: "mid",  label: "Average  70–90%", dot: "bg-amber-400" },
+              { key: "low",  label: "Below Average  < 70%", dot: "bg-red-400" },
+            ].map(({ key, label, dot }) => (
+              <button
+                key={key}
+                onClick={() => setConfFilter(key)}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all",
+                  confFilter === key
+                    ? "bg-indigo-600 text-white border-indigo-600"
+                    : "bg-white text-slate-500 border-slate-200 hover:border-indigo-300 hover:text-indigo-600"
+                )}
+              >
+                {dot && <span className={cn("w-1.5 h-1.5 rounded-full", dot)} />}
+                {label}
+              </button>
+            ))}
+          </div>
           <div className="flex-1 overflow-auto p-5 space-y-4">
-            <FlatFieldsSection onJump={jumpToPage} />
-            <NestedSection onJump={jumpToPage} />
-            <TableSection onJump={jumpToPage} />
+            <FlatFieldsSection onJump={jumpToPage} confFilter={confFilter} />
+            <NestedSection onJump={jumpToPage} confFilter={confFilter} />
+            <TableSection onJump={jumpToPage} confFilter={confFilter} />
           </div>
         </div>
 
